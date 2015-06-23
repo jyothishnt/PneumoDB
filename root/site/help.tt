@@ -1,0 +1,71 @@
+<div class="help_container">
+  <div class="icon-help colorbox_head center icon-padding-right">Help</div>
+  <div class="colorbox_display">
+    <div id="report_issue" class="center">
+      <p> Please report any issues or bugs to <a href="mailto:gps@pneumogen.net?subject=GPS Dataviewer">gps@pneumogen.net</a></p>
+    </div>
+    <div class="video_div" onclick="showHelpVideo()">
+      Watch tutorial here <img src="[% c.request.base %]/static/images/icon-video.gif">
+    </div>
+    <div id="view_column_help">
+      <h4 class="blue">View Columns</h4><hr>
+      <p>
+        Use this button to open the left pane where the column options are listed. Click on the column to show / hide it in the dataviewer grid
+      </p>
+    </div>
+    <div id="search_column_help">
+      <h4 class="blue">Search</h4><hr>
+      <p>
+        The search button on the tool bar will open the search form for you. Use this to search the database.
+        Below are the steps to perform a search.
+        <ul>
+          <li>Select search column from the drop down list <select size="1" style="width: 150px" name="columns" id="help_select_column"></select> <a onclick="showColHeaderHelp('col');">Click to know more</a>
+            <div class="help_select_column_content">
+            </div>
+          </li>
+          <li>Select search type <select size="1" style="width: 105px" id="help_eq"></select> <a onclick="showColHeaderHelp('type');">Click to know more</a>
+          </li>
+          <li>Type or paste your search identifier in the box provided. <br><em>A list of search identifiers must be entered in separate lines</em></li>
+          <li>Click Search button</li>
+        </ul>
+      </p>
+    </div>
+    <div id="csv_help">
+      <h4 class="blue">CSV Download</h4><hr>
+      <p>
+        Data can be downloaded as CSV (comma separated values) files. These are saved as .csv format and could be opened in any spreadsheet readers like Excel
+      </p>
+    </div>
+    <div id="xml_help">
+      <h4 class="blue">XML Download</h4><hr>
+      <p>
+        Data can be downloaded as as XML files. These are saved as .xls format and could be opened in any spreadsheet readers like Excel. XML file sizes are larger than CSVs.
+      </p>
+    </div>
+    <div id="fastq_help">
+      <h4 class="blue">Fastq Download</h4><hr>
+      <p>
+        Fastq's are the raw sequence data. There is one file each for the forward (_1) and reverse reads (_2) per sample.
+        All fastq data is hosted at <a href="http://www.ebi.ac.uk/ena" target="_blank">EBI-ENA</a>
+      </p>
+      <p>
+        You can download a single file by clicking on the URLs. Alternatively you can download a text file (e.g. fastq_urls.txt) containing the URLs which can be used as an input for a bulk download via Unix with the command <code>wget -i fastq_urls.txt</code>
+      </p>
+      <p>
+        ENA accession numbers are provided within the database for each sample to link the sequencing data with the strain and metadata
+      </p>
+    </div>
+    <div id="ass_help">
+      <h4 class="blue">Assembly Download</h4><hr>
+      <p>
+        Assemblies were created using the Sanger Institute automated pipeline that utilises Velvet (Zerbino DR, Birney E, 2008) and <a href="https://github.com/Victorian-Bioinformatics-Consortium/VelvetOptimiser" target="_blank">Velvet optimiser</a>
+      </p>
+    </div>
+    <div id="anno_help">
+      <h4 class="blue">Annotation Download</h4><hr>
+      <p>
+        Automated annotation was performed using the Sanger Institute <a href="https://github.com/sanger-pathogens/Bio-AutomatedAnnotation" target="_blank">bacterial annotation pipeline</a> utilising Prokka (T.Seemann, 2014)
+      </p>
+    </div>
+  </div>
+</div>
