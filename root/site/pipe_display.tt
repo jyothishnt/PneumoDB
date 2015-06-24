@@ -215,7 +215,7 @@
 </div>
 
     <div id="chartDiv">
-      <div class="colorbox_head center head title">Summary of sample count (with entire GPS dataset) </div>
+      <div class="colorbox_head center head title">Summary of sample count (with entire PneumoDB dataset) </div>
       <div id="chartContainer">
         <div id="chartSelect" class="draggable">
           <ul>
@@ -244,7 +244,7 @@
       <div class="icon-help colorbox_head center icon-padding-right">Help</div>
       <div class="colorbox_display">
         <div id="report_issue" class="center">
-          <p> Please report any issues or bugs to <a href="mailto:gps@pneumogen.net?subject=GPS Dataviewer">gps@pneumogen.net</a></p>
+          <p> Please report any issues or bugs to <a href="mailto:gps@pneumogen.net?subject=PneumoDB Viewer">gps@pneumogen.net</a></p>
         </div>
         <div class="video_div" onclick="showHelpVideo()">
           Watch tutorial here <img src="[% c.request.base %]/static/images/icon-video.gif">

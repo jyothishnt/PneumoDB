@@ -2287,3 +2287,4 @@
 [2015/06/24 15:18:06] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-Search:[[{"search_str":"passed","columns":"psd_manual_qc","eq":"in"}]]
 [2015/06/24 15:18:08] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-Search:[[{"search_str":"pending","columns":"psd_manual_qc","eq":"in"}]]
 [2015/06/24 15:18:11] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
+[2015/06/24 16:17:52] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
