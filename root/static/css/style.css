@@ -176,7 +176,7 @@ p.and {
 	transition:0.5s ease;
 }
 .topbanner {
-	background: #333;
+	background: #0079a3;
 }
 .logo img {
 	float: left;
@@ -191,22 +191,22 @@ p.and {
 	font-size: 18px;
 	letter-spacing: 3px;
 	font-weight: normal;
-	color: #ccc;
+	color: #fff;
 }
 .clear {clear:both;}
 .welcome {
-	color: #ccc;
+	color: #fff;
 	margin: 3px;
 }
 .welcome a{
 	padding: 0px 5px;
-	color: #45bcff;
+	color: cyan;
 	text-decoration: none;
 }
 .welcome a:hover{
 	padding: 0px 5px;
 	color: white;
-	border-bottom: 1px solid #45bcff;
+	border-bottom: 1px solid cyan;
 	text-decoration: none;
 	-webkit-transition:0.2s ease;
 	-moz-transition:0.2s ease;
