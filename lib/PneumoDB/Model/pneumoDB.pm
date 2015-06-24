@@ -5,11 +5,12 @@ use base 'Catalyst::Model::DBIC::Schema';
 
 __PACKAGE__->config(
     schema_class => 'PneumoDB::Schema',
-    
+
     connect_info => {
-        dsn => 'dbi:mysql:pneumoDB',
-        user => 'jb39',
-        password => 'jb39_mysql',
+        dsn => PneumoDB->config->{dsn},
+        user => PneumoDB->config->{user},
+        password => PneumoDB->config->{password},
+        mysql_auto_reconnect => PneumoDB->config->{mysql_auto_reconnect}
     }
 );
 
