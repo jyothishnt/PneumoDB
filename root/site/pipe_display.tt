@@ -99,13 +99,13 @@
           <div data-options="iconCls:'icon-qc'" >
             <span>QC</span>
             <div>
-              <div onClick="updateDecision(1)" iconCls="icon-ok" plain="true" title="Include selected">Include</div>
-              <div onClick="updateDecision(2)" iconCls="icon-hq" plain="true" title="Mark as High Quality">High Quality</div>
-              <div onClick="updateDecision(0)" iconCls="icon-exclude" plain="true" title="Exclude selected">Exclude</div>
-              <div onClick="updateDecision(-1)" iconCls="icon-progress" plain="true" title="In Progress">In Progress</div>
+              <div onClick="updateDecision(1)" iconCls="icon-ok" plain="true" title="Include selected" disabled>Include</div>
+              <div onClick="updateDecision(2)" iconCls="icon-hq" plain="true" title="Mark as High Quality" disabled>High Quality</div>
+              <div onClick="updateDecision(0)" iconCls="icon-exclude" plain="true" title="Exclude selected" disabled>Exclude</div>
+              <div onClick="updateDecision(-1)" iconCls="icon-progress" plain="true" title="In Progress" disabled>In Progress</div>
             </div>
           </div>
-          <div onClick="javascript:showUpdateSTWindow()" iconCls="icon-upload" plain="true" title="Update ST">Bulk Upload</div>
+          <div onClick="javascript:showUpdateSTWindow()" iconCls="icon-upload" plain="true" title="Update ST" disabled>Bulk Upload</div>
           <div class="menu-sep"></div>
           <div data-options="iconCls:'icon-eye'" >
             <span>Visualize</span>
@@ -140,11 +140,11 @@
             Download Fastq
             <span onmouseover="showColorbox({str:$('#fastq_help').html()});" class="icon-info icon-help-menu-right"></span>
           </div>
-          <div onClick="javascript:downloadZipFiles('assemblies');" id="assemblylink" iconCls="icon-zip">
+          <div onClick="javascript:downloadZipFiles('assemblies');" id="assemblylink" iconCls="icon-zip" disabled>
             Download Assemblies
             <span onmouseover="showColorbox({str:$('#ass_help').html()});" class="icon-info icon-help-menu-right"></span>
           </div>
-          <div onClick="javascript:downloadZipFiles('annotations');" id="annotationlink" iconCls="icon-zip">
+          <div onClick="javascript:downloadZipFiles('annotations');" id="annotationlink" iconCls="icon-zip" disabled>
             Download Annotations
             <span onmouseover="showColorbox({str:$('#anno_help').html()});" class="icon-info icon-help-menu-right"></span>
           </div>

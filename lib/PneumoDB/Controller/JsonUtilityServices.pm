@@ -177,8 +177,7 @@ sub getSampleCountAuthorised :Path('/count/meta/') {
             ON SC.pss_public_name = M.pmd_public_name
         GROUP BY $prefix.$colname_search
     };
-    use Data::Dumper;
-print Dumper $q;
+
     my $sth = $c->config->{pneumodb_dbh}->prepare($q);
     $sth->execute;
     # Create a resultset with a groupby clause

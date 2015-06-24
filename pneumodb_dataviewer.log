@@ -2249,3 +2249,41 @@
 [2015/06/22 16:55:50] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
 [2015/06/22 17:04:53] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
 [2015/06/23 11:44:06] [ERROR] 2000 Catalyst - Caught exception in PneumoDB::Controller::SearchGpsDB->searchGPSData "Can't call method "pnu_institution" on an undefined value at /Library/WebServer/CGI-Executables/PneumoDB/script/../lib/PneumoDB/Controller/SearchGpsDB.pm line 33."
+[2015/06/24 15:14:33] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
+[2015/06/24 15:14:43] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
+[2015/06/24 15:14:43] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
+[2015/06/24 15:14:44] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
+[2015/06/24 15:14:44] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
+[2015/06/24 15:14:44] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
+[2015/06/24 15:14:45] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
+[2015/06/24 15:14:45] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
+[2015/06/24 15:14:45] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
+[2015/06/24 15:14:45] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
+[2015/06/24 15:14:46] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
+[2015/06/24 15:14:46] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
+[2015/06/24 15:14:46] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
+[2015/06/24 15:14:47] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
+[2015/06/24 15:14:47] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
+[2015/06/24 15:14:48] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
+[2015/06/24 15:14:49] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
+[2015/06/24 15:14:55] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
+[2015/06/24 15:14:57] [WARN] 41 PneumoDB.Controller.UpdateDecision - Jyo-UpdateDecision-1-[{"pss_public_name":"UoS0011","pss_lane_id":"6470_3#2","pss_sanger_id":"UoS0011"}]
+[2015/06/24 15:14:57] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
+[2015/06/24 15:15:30] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
+[2015/06/24 15:15:55] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
+[2015/06/24 15:16:11] [ERROR] 2000 Catalyst - Caught exception in PneumoDB::Controller::JsonUtilityServices->getSampleCountAuthorised "DBD::mysql::st execute failed: Unknown column 'U.prs_in_silico_serotype' in 'field list' at /Library/WebServer/CGI-Executables/PneumoDB/script/../lib/PneumoDB/Controller/JsonUtilityServices.pm line 183."
+[2015/06/24 15:16:13] [ERROR] 2000 Catalyst - Caught exception in PneumoDB::Controller::JsonUtilityServices->getSampleCountAuthorised "DBD::mysql::st execute failed: Unknown column 'U.prs_in_silico_st' in 'field list' at /Library/WebServer/CGI-Executables/PneumoDB/script/../lib/PneumoDB/Controller/JsonUtilityServices.pm line 183."
+[2015/06/24 15:16:31] [WARN] 37 PneumoDB.Controller.FastqDownload - Jyo-FastqUrl-{"accession":["ERR044860","ERR044862"],"type":"fastq_ftp"}
+[2015/06/24 15:16:37] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad-{"sort":"pss_lane_id","order":"asc","page":"1","rows":"15"}
+[2015/06/24 15:16:37] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad-{"sort":"pss_lane_id","page":"1","order":"desc","rows":"15"}
+[2015/06/24 15:16:38] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad-{"rows":"15","sort":"pss_lane_id","page":"1","order":"asc"}
+[2015/06/24 15:16:44] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad-{"rows":"15","sort":"pss_lane_id","order":"desc","page":"1"}
+[2015/06/24 15:17:13] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
+[2015/06/24 15:17:28] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-Search:[[{"search_str":"UO","columns":"pss_sanger_id","eq":"in"}]]
+[2015/06/24 15:17:32] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-Search:[[{"eq":"in","columns":"pss_sanger_id","search_str":"U0"}]]
+[2015/06/24 15:17:39] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-Search:[[{"search_str":"Uos","columns":"pss_sanger_id","eq":"like"}]]
+[2015/06/24 15:17:42] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-Search:[[{"search_str":"UOs","eq":"like","columns":"pss_sanger_id"}]]
+[2015/06/24 15:18:03] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-Search:[[{"search_str":"failed","eq":"in","columns":"psd_manual_qc"}]]
+[2015/06/24 15:18:06] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-Search:[[{"search_str":"passed","columns":"psd_manual_qc","eq":"in"}]]
+[2015/06/24 15:18:08] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-Search:[[{"search_str":"pending","columns":"psd_manual_qc","eq":"in"}]]
+[2015/06/24 15:18:11] [WARN] 77 PneumoDB.Controller.SearchGpsDB - Jyo-PageLoad
