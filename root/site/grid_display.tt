@@ -31,7 +31,7 @@
       <div class="clear"></div>
     </div>
     <div>
-      <div id="block_screen">
+      <div id="block_screen" class="spin_logo">
         <img src="[% c.request.base %]/static/images/gps_logo_small.png">
         <img class="ani" src="[% c.request.base %]/static/images/gps_ani_over.png">
         <p> Loading </p>
@@ -99,10 +99,10 @@
           <div data-options="iconCls:'icon-qc'" >
             <span>QC</span>
             <div>
-              <div onClick="updateDecision(1)" iconCls="icon-ok" plain="true" title="Include selected" disabled>Include</div>
-              <div onClick="updateDecision(2)" iconCls="icon-hq" plain="true" title="Mark as High Quality" disabled>High Quality</div>
-              <div onClick="updateDecision(0)" iconCls="icon-exclude" plain="true" title="Exclude selected" disabled>Exclude</div>
-              <div onClick="updateDecision(-1)" iconCls="icon-progress" plain="true" title="In Progress" disabled>In Progress</div>
+              <div onClick="updateDecision(1)" iconCls="icon-ok" plain="true" title="Include selected">Include</div>
+              <div onClick="updateDecision(2)" iconCls="icon-hq" plain="true" title="Mark as High Quality">High Quality</div>
+              <div onClick="updateDecision(0)" iconCls="icon-exclude" plain="true" title="Exclude selected">Exclude</div>
+              <div onClick="updateDecision(-1)" iconCls="icon-progress" plain="true" title="In Progress">In Progress</div>
             </div>
           </div>
           <div onClick="javascript:showUpdateSTWindow()" iconCls="icon-upload" plain="true" title="Update ST" disabled>Bulk Upload</div>
@@ -140,11 +140,11 @@
             Download Fastq
             <span onmouseover="showColorbox({str:$('#fastq_help').html()});" class="icon-info icon-help-menu-right"></span>
           </div>
-          <div onClick="javascript:downloadZipFiles('assemblies');" id="assemblylink" iconCls="icon-zip" disabled>
+          <div onClick="javascript:downloadZipFiles('assemblies');" id="assemblylink" iconCls="icon-zip">
             Download Assemblies
             <span onmouseover="showColorbox({str:$('#ass_help').html()});" class="icon-info icon-help-menu-right"></span>
           </div>
-          <div onClick="javascript:downloadZipFiles('annotations');" id="annotationlink" iconCls="icon-zip" disabled>
+          <div onClick="javascript:downloadZipFiles('annotations');" id="annotationlink" iconCls="icon-zip">
             Download Annotations
             <span onmouseover="showColorbox({str:$('#anno_help').html()});" class="icon-info icon-help-menu-right"></span>
           </div>
@@ -327,9 +327,11 @@
   <script type="text/javascript" src="[% c.request.base %]/static/js/FileSaver.min.js"></script>
   <script type="text/javascript" src="[% c.request.base %]/static/js/jszip.min.js"></script>
   <script type="text/javascript" src="[% c.request.base %]/static/js/canvasjs.min.js"></script>
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.0/js/materialize.min.js"></script>
   <script type="text/javascript">
 
-    var base_request_url = "[% c.request.base %]", user_role = "[% c.user.pnu_role %]";if(user_role == undefined)user_role = "";var gpsdb_column_2d_array = [% gpsdb_column_2d_array %], user_exists = [% c.user_exists %];
+    var base_request_url = "[% c.request.base %]", user_role = "[% c.user.pnu_role %]";if(user_role == undefined)user_role = "";var pneumodb_column_2d_array = [% pneumodb_column_2d_array %], user_exists = [% c.user_exists %];
 </script>
   </body>
 </html>

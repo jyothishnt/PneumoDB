@@ -46,7 +46,7 @@ var showGrid = function(fl){
   init = (fl=="search")? false : true; // If search clicked, then it is no more an initial load. So set it false
   // Main data grid initialization
   var dg = $('#dg').edatagrid({
-    url: base_request_url + '/gps/json/search',
+    url: base_request_url + '/pneumodb/json/search',
     columns: [dgcolumns],
     method: 'post',
     queryParams: (dg_searched)? search_query:'',
@@ -273,7 +273,7 @@ var saveData = function(){
   $('#dg').edatagrid('acceptChanges');
   if(chArr.length) {
     $.ajax({
-      url: base_request_url + '/gps/update/comments',
+      url: base_request_url + '/pneumodb/update/comments',
       type: 'POST',
       data: {
         'data' : JSON.stringify(chArr),
@@ -333,10 +333,10 @@ var exportData = function(extn) {
     else {
       qdata = {};
     }
-    url = base_request_url + '/gps/json/download';
+    url = base_request_url + '/pneumodb/json/download';
   }
   else {
-    url = base_request_url + '/gps/json/download_selected';
+    url = base_request_url + '/pneumodb/json/download_selected';
     var arr = new Array();
     // Decision flag is used to check if the selected row has been excluded or not. Excluded data are not given for download
     // Currently allowing all download. So below statement is set to false
@@ -435,13 +435,13 @@ var JSONtoXML = function (jsonObject) {
   });
 
   if ('download' in document.createElement("a")) {
-    saveAs(blob, "gps_stat_metadata.xls");
+    saveAs(blob, "pneumodb_stat_metadata.xls");
   }
   else {
     var link = document.createElement("a");
     link.setAttribute('target', '_blank');
     link.setAttribute("href", window.URL.createObjectURL(blob));
-    // link.setAttribute("download", "gps_stat_meta_data.csv");
+    // link.setAttribute("download", "pneumodb_stat_meta_data.csv");
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -486,7 +486,7 @@ function JSONtoCSV(arrData) {
       return;
   }
   //Generate a file name
-  var filename = "gps_stat_metadata.csv";
+  var filename = "pneumodb_stat_metadata.csv";
 
   // Now the little tricky part.
   // you can use either>> window.open(uri);
@@ -499,13 +499,13 @@ function JSONtoCSV(arrData) {
      "type": "text/csv;charset=utf8;"
   });
   if ('download' in document.createElement("a")) {
-    saveAs(blob, "gps_stat_metadata.csv");
+    saveAs(blob, "pneumodb_stat_metadata.csv");
   }
   else {
     var link = document.createElement("a");
     link.setAttribute('target', '_blank');
     link.setAttribute("href", window.URL.createObjectURL(blob));
-    // link.setAttribute("download", "gps_stat_meta_data.csv");
+    // link.setAttribute("download", "pneumodb_stat_meta_data.csv");
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -588,7 +588,7 @@ var updateAllDecision = function(decisionVal) {
 var sendForDecisionUpdate = function(dataArr, decisionVal) {
   if(dataArr.length > 0) {
     $.ajax({
-      url: base_request_url + '/gps/update/decision',
+      url: base_request_url + '/pneumodb/update/decision',
       type: 'POST',
       cache:false,
       data: {
@@ -623,9 +623,9 @@ var sendForDecisionUpdate = function(dataArr, decisionVal) {
 
 var populateSearchColumns = function() {
   var html_str = '';
-  $.each(gpsdb_column_2d_array, function(k,v) {
+  $.each(pneumodb_column_2d_array, function(k,v) {
     html_str += '<optgroup label="----------------------">';
-    $.each(gpsdb_column_2d_array[k], function(index, value) {
+    $.each(pneumodb_column_2d_array[k], function(index, value) {
       html_str += '<option value="'+ value +'">' + sliced_column(value) + '</option>';
     });
   })
@@ -637,8 +637,8 @@ function sliced_column(column_name) {
   return column_name.slice(4).replace(/_/g,' ');
 }
 
-var gpsdb_column_2d_array = new Object();
-var gpsdb_column_1d_array = new Array();
+var pneumodb_column_2d_array = new Object();
+var pneumodb_column_1d_array = new Array();
 var dgcolumns = new Array();
 var editable_columns = new Array();
 editable_columns = ['prs_comments', 'prs_in_silico_st', 'prs_in_silico_serotype', 'prs_baps_1', 'prs_baps_2', 'prs_vaccine_status', 'prs_vaccine_period'];
@@ -656,9 +656,9 @@ $(document).ready(function(){
   // Initialize a javascript variable with ArrayOfArrays representing columns in different tables that is passed to the template
 
   //Create a list of column names in a 1D array
-  $.each(gpsdb_column_2d_array, function(i, row) {
+  $.each(pneumodb_column_2d_array, function(i, row) {
     $.each(row, function(i, column_name) {
-      gpsdb_column_1d_array.push(column_name);
+      pneumodb_column_1d_array.push(column_name);
     });
   });
 
@@ -714,13 +714,13 @@ $(document).ready(function(){
 
   // Load columns to be visible in the same order as they are initialised in the visible_columns array.
   $.each(visible_columns, function(i, vcol_name) {
-    if(exclude_columns.indexOf(vcol_name) == -1 && gpsdb_column_1d_array.indexOf(vcol_name) != -1) {
+    if(exclude_columns.indexOf(vcol_name) == -1 && pneumodb_column_1d_array.indexOf(vcol_name) != -1) {
       var dg_column_field = createColumnFieldsForDatagrid(vcol_name)
       dgcolumns.push(dg_column_field);
     }
   });
   // Load rest of the columns other than in the visible_columns array
-  $.each(gpsdb_column_1d_array, function(i,column_name) {
+  $.each(pneumodb_column_1d_array, function(i,column_name) {
     if(exclude_columns.indexOf(column_name) == -1 && visible_columns.indexOf(column_name) == -1) {
       var dg_column_field = createColumnFieldsForDatagrid(column_name)
       dgcolumns.push(dg_column_field);
@@ -1267,10 +1267,10 @@ function st_update_validator() {
      }
     },
     complete: function(xhr) {
-      $('#dg').datagrid('reload');
-      changePaginationText(paginationOriginalText);
-      // $('.update_st_form_container').window('close');
-      $('.st_upload_tip').html('');
+      // $('#dg').datagrid('reload');
+      // changePaginationText(paginationOriginalText);
+      // // $('.update_st_form_container').window('close');
+      // $('.st_upload_tip').html('');
       unblock_screen();
     },
     error: function(jqXHR, textStatus, errorThrown) {

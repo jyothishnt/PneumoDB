@@ -47,7 +47,7 @@ sub auto : Private {
             return 1;
         }
         else {
-            $c->response->redirect($c->uri_for('/gps/data'));
+            $c->response->redirect($c->uri_for('/pneumodb/data'));
         }
     }
     elsif ($c->request->path =~ /changepassword/) {

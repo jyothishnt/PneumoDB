@@ -12,7 +12,7 @@
       <div id="mainlogin">
         <h1>PneumoDB</h1>
         <form method="post" action="[% c.uri_for('/login') %]">
-          <input type="text" name="username" placeholder="username" value="" required>
+          <input type="text" name="username" placeholder="username" value="" required autofocus>
           <input type="password" name="password" placeholder="password" value="" required>
           <button type="submit" class="circle">Login</button>
         </form>

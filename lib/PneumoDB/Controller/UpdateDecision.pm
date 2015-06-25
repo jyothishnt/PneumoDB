@@ -25,10 +25,10 @@ Catalyst Controller.
 
 
 # Update decision 0/1/-1 representing exclude/include/new entries respectively
-sub updateDecision : Path('/gps/update/decision') {
+sub updateDecision : Path('/pneumodb/update/decision') {
   my ( $self, $c, @args ) = @_;
   my $type = (defined $c->request->param('type'))?$c->request->param('type'):1;
-  my $schema = $c->model('gps::GpsResult');
+  my $schema = $c->model('PneumoDB::PneumodbResult');
   my $postData = from_json $c->request->params->{data};
 
   my $rs;

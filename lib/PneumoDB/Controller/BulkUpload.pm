@@ -46,7 +46,7 @@ sub bulkUpload :Path('/bulk_upload/') {
     $c->res->body(to_json($res));
     return;
   }
-
+use Data::Dumper;
   my $extension = (split('\.', $upfile->filename))[-1];
   my $parsedData = {};
   if($extension eq "xlsx") {
@@ -59,6 +59,8 @@ sub bulkUpload :Path('/bulk_upload/') {
     $parsedData = parseCSV($upfile->fh);
   }
 
+
+print Dumper $upfile->fh;
   my $q;
   eval {
     foreach my $lane (keys %$parsedData) {
@@ -146,7 +148,9 @@ sub parseCSV {
   my $csv = Text::CSV->new ( { binary => 1 } )  # should set binary attribute.
                  or die "Cannot use CSV: ".Text::CSV->error_diag ();
   <$fh>;
+
   while ( my $row = $csv->getline( $fh ) ) {
+    print Dumper $row->[0];
     if (defined $row->[0]) {
       $parsedData->{$row->[0]} = (defined $row->[1])? $row->[1] : ''
     }

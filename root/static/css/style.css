@@ -124,7 +124,7 @@ code{
 	position: absolute;
 }
 .blue {
-	color: #007fc5;
+	color: #e57e00;
 }
 select {
 	font-size: 10px;
@@ -155,6 +155,10 @@ p.and {
 	float: right;
 	padding: 3px 10px 0px 0px;
 }
+.spin_logo img{
+    -webkit-filter: hue-rotate(190deg);
+    filter: hue-rotate(90deg);
+}
 .anilink a
 {
 	color:#111;
@@ -176,13 +180,16 @@ p.and {
 	transition:0.5s ease;
 }
 .topbanner {
-	background: #0079a3;
+	background: #333;
 }
 .logo img {
 	float: left;
 	padding: 0 5px 0 2px;
 	width: 30px;
 	vertical-align: middle;
+    -webkit-filter: hue-rotate(190deg);
+    filter: hue-rotate(90deg);
+
 }
 .logo h2 {
 	float: left;
@@ -200,13 +207,13 @@ p.and {
 }
 .welcome a{
 	padding: 0px 5px;
-	color: cyan;
+	color: #ff8d00;
 	text-decoration: none;
 }
 .welcome a:hover{
 	padding: 0px 5px;
 	color: white;
-	border-bottom: 1px solid cyan;
+	border-bottom: 1px solid #ff8d00;
 	text-decoration: none;
 	-webkit-transition:0.2s ease;
 	-moz-transition:0.2s ease;
@@ -266,7 +273,7 @@ span.icon-help-menu-right{
 	text-decoration: none;
 }
 .bgblue {
-	background-color: #007fc5;
+	background-color: #e57e00;
 	color: white;
 }
 .hidden {
@@ -318,7 +325,7 @@ button.add_selected {
 
 .add_border {
 	background: #eee;
-	border-right: 3px solid #3280ff !important;
+	border-right: 3px solid #ff8d00 !important;
 }
 .remove_border {
 	background: #eee;

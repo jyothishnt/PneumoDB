@@ -24,7 +24,7 @@ Catalyst Controller.
 
 # Function that gets called for loading the initial page.
 # This sends db columns as a 2D array to the template
-sub gpsDataDisplayMain :Path('/gps/data/') :Args(0) {
+sub gpsDataDisplayMain :Path('/pneumodb/data/') :Args(0) {
   my ( $self, $c ) = @_;
   my @col_arr = ();
   my $col = ();
@@ -61,9 +61,9 @@ sub gpsDataDisplayMain :Path('/gps/data/') :Args(0) {
   push(@{$col}, [@col_arr_gmd]);
 
   #$c->stash->{search_columns} = to_json(\@col_arr);
-  $c->stash->{gpsdb_column_2d_array} = to_json($col);
-  $c->stash->{username} = 'GPS Search';
-  $c->stash->{template} = 'site/pipe_display.tt';
+  $c->stash->{pneumodb_column_2d_array} = to_json($col);
+  $c->stash->{username} = 'PneumoDB Search';
+  $c->stash->{template} = 'site/grid_display.tt';
 }
 
 

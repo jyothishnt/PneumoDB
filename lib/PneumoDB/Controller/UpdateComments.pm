@@ -59,10 +59,10 @@ sub createSqlString {
 }
 
 # Update comments in the GPS database
-sub updateComments : Path('/gps/update/comments') {
+sub updateComments : Path('/pneumodb/update/comments') {
   my ( $self, $c, @args ) = @_;
 
-  my $schema = $c->model('gps::GpsResult');
+  my $schema = $c->model('PneumoDB::PneumodbResult');
   my $postData = from_json $c->request->params->{data};
   my $rs;
   my $txn;

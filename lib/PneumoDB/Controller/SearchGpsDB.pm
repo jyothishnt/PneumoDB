@@ -26,7 +26,7 @@ Catalyst Controller.
 
 # Search gps data
 # Fetching sequence data from gps db
-sub searchGPSData :Path('/gps/json/') {
+sub searchGPSData :Path('/pneumodb/json/') {
   my ( $self, $c, @args ) = @_;
   # Logging
   my $log_str = '';

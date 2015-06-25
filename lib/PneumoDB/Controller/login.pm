@@ -53,7 +53,7 @@ sub index : Path('/login') {
             }) ) {
 
           if(defined $c->user->get("pnu_active") && $c->user->get("pnu_active")) {
-            $c->response->redirect($c->uri_for('/gps/data'));
+            $c->response->redirect($c->uri_for('/pneumodb/data'));
           }
           else {
             $c->stash->{error_msg} = "Not an active user!";
