@@ -1215,9 +1215,9 @@ function st_update_validator() {
     showMsg('Please select your file to upload!');
     return false;
   }
-  var reg = /\.xlsx$|\.xls$|\.csv$/;
+  var reg = /\.xlsx$|\.xls$$/;
   if(!reg.test($('#st_update_file').val())) {
-    showMsg('Invalid file. Only .xlsx files are valid!');
+    showMsg('Invalid file. Only .xls and .xlsx files are valid!');
     return false;
   }
 

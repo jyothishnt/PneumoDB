@@ -105,7 +105,7 @@
               <div onClick="updateDecision(-1)" iconCls="icon-progress" plain="true" title="In Progress">In Progress</div>
             </div>
           </div>
-          <div onClick="javascript:showUpdateSTWindow()" iconCls="icon-upload" plain="true" title="Update ST" disabled>Bulk Upload</div>
+          <div onClick="javascript:showUpdateSTWindow()" iconCls="icon-upload" plain="true" title="Update ST">Bulk Upload</div>
           <div class="menu-sep"></div>
           <div data-options="iconCls:'icon-eye'" >
             <span>Visualize</span>

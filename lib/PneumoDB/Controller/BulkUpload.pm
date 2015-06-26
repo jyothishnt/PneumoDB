@@ -60,7 +60,7 @@ use Data::Dumper;
   }
 
 
-print Dumper $upfile->fh;
+print Dumper $upfile, $upfile->fh;
   my $q;
   eval {
     foreach my $lane (keys %$parsedData) {
@@ -146,9 +146,9 @@ sub parseCSV {
 
   my @rows;
   my $csv = Text::CSV->new ( { binary => 1 } )  # should set binary attribute.
-                 or die "Cannot use CSV: ".Text::CSV->error_diag ();
-  <$fh>;
+                 or die "Cannot use CSV: ".Text::CSV->error_diag();
 
+  <$fh>;
   while ( my $row = $csv->getline( $fh ) ) {
     print Dumper $row->[0];
     if (defined $row->[0]) {
