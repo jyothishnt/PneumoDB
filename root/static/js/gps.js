@@ -810,9 +810,13 @@ var createColumnFieldsForDatagrid = function(column_name)
   t['width'] = 115;
   t['sortable'] = true;
   t['hidden'] = true;
-  var reg = /comments|sample_outcome/
+  var reg = /comments|sample_outcome|study_name/;
   if(reg.test(column_name)) {
     t['width'] = 200;
+  }
+  reg = /study_name/;
+  if(reg.test(column_name)) {
+    t['width'] = 400;
   }
   if(user_role == "admin" && editable_columns.indexOf(column_name) != -1) {
     t['editor'] = 'textarea';

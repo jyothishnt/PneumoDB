@@ -31,56 +31,62 @@ sub pneumoDataDisplayMain :Path('/pneumodb/data/') :Args(0) {
 
   # Get all the columns from the database to populate HTML dropdown in the search form
   # Pushing columns from sequence scape table
-  my $schema_gss = $c->model('PneumoDB::PneumodbSequenceScape');
-  my @col_arr_gss = $schema_gss->result_source->columns;
-  push(@col_arr, @col_arr_gss);
+  my $schema = $c->model('PneumoDB::PneumodbSequenceScape');
+  my @columns = $schema->result_source->columns;
+  push(@col_arr, @columns);
   push(@{$col}, [@col_arr]);
 
   # Pushing columns from PneumoDB results table
-  my $schema_gup = $c->model('PneumoDB::PneumodbResult');
-  my @col_arr_gup = $schema_gup->result_source->columns;
-  splice (@col_arr_gup,0,2);
-  push(@col_arr, @col_arr_gup);
-  push(@{$col}, [@col_arr_gup]);
+  $schema = $c->model('PneumoDB::PneumodbResult');
+  @columns = $schema->result_source->columns;
+  splice (@columns,0,2);
+  push(@col_arr, @columns);
+  push(@{$col}, [@columns]);
 
   # Pushing columns from PneumoDB results table
-  my $schema_gmlst = $c->model('PneumoDB::PneumodbResultsMlst');
-  my @col_arr_gmlst = $schema_gmlst->result_source->columns;
-  splice (@col_arr_gmlst,0,1);
-  push(@col_arr, @col_arr_gmlst);
-  push(@{$col}, [@col_arr_gmlst]);
+  $schema = $c->model('PneumoDB::PneumodbResultsMlst');
+  @columns = $schema->result_source->columns;
+  splice (@columns,0,1);
+  push(@col_arr, @columns);
+  push(@{$col}, [@columns]);
 
   # Pushing columns from PneumoDB results table
-  my $schema_ganti = $c->model('PneumoDB::PneumodbResultsAntibiotic');
-  my @col_arr_ganti = $schema_ganti->result_source->columns;
-  splice (@col_arr_ganti,0,1);
-  push(@col_arr, @col_arr_ganti);
-  push(@{$col}, [@col_arr_ganti]);
+  $schema = $c->model('PneumoDB::PneumodbResultsAntibiotic');
+  @columns = $schema->result_source->columns;
+  splice (@columns,0,1);
+  push(@col_arr, @columns);
+  push(@{$col}, [@columns]);
 
   # Pushing columns from sequence data table
-  my $schema_gsd = $c->model('PneumoDB::PneumodbSequenceData');
-  my @col_arr_gsd = $schema_gsd->result_source->columns;
-  splice (@col_arr_gsd,0,4);
-  splice (@col_arr_gsd,2,1);
-  splice (@col_arr_gsd,6,1);
-  splice (@col_arr_gsd,9,1);
-  push(@col_arr, @col_arr_gsd);
-  push(@{$col}, [@col_arr_gsd]);
+  $schema = $c->model('PneumoDB::PneumodbSequenceData');
+  @columns = $schema->result_source->columns;
+  splice (@columns,0,4);
+  splice (@columns,2,1);
+  splice (@columns,6,1);
+  splice (@columns,9,1);
+  push(@col_arr, @columns);
+  push(@{$col}, [@columns]);
 
   # Pushing columns from metadata table
-  my $schema_gmd = $c->model('PneumoDB::PneumodbMetadata');
-  my @col_arr_gmd = $schema_gmd->result_source->columns;
-  push(@col_arr, @col_arr_gmd);
-  splice (@col_arr_gmd,1,1);
-  push(@{$col}, [@col_arr_gmd]);
+  $schema = $c->model('PneumoDB::PneumodbMetadata');
+  @columns = $schema->result_source->columns;
+  push(@col_arr, @columns);
+  splice (@columns,1,1);
+  push(@{$col}, [@columns]);
 
   # Pushing columns from metadata table
-  my $schema_coord = $c->model('PneumoDB::PneumodbCoordinates');
-  my @col_arr_coord = $schema_coord->result_source->columns;
-  push(@col_arr, @col_arr_coord);
-  splice (@col_arr_coord,0,1);
-  push(@{$col}, [@col_arr_coord]);
+  $schema = $c->model('PneumoDB::PneumodbCoordinates');
+  @columns = $schema->result_source->columns;
+  push(@col_arr, @columns);
+  splice (@columns,0,1);
+  push(@{$col}, [@columns]);
 
+  # Pushing columns from metadata table
+  $schema = $c->model('PneumoDB::PneumodbStudy');
+  @columns = $schema->result_source->columns;
+  push(@col_arr, @columns);
+  splice (@columns,0,1);
+  push(@{$col}, [@columns]);
 
   #$c->stash->{search_columns} = to_json(\@col_arr);
   $c->stash->{pneumodb_column_2d_array} = to_json($col);

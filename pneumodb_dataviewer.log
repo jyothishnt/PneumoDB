@@ -77,3 +77,17 @@
 [2016/01/15 14:19:46] [WARN] 77 PneumoDB.Controller.SearchPneumoDB - Jyo-Search:[[{"columns":"pss_lane_id","search_str":"9789_2#15","eq":"in"}]]
 [2016/01/15 14:20:02] [WARN] 40 PneumoDB.Controller.BulkUpload - Jyo-BulkUpload-prs_in_silico_serotype-{"st_update_type":"prs_in_silico_serotype","st_update_file":"140827_serotype_reformat.csv"}
 [2016/01/15 14:20:02] [WARN] 77 PneumoDB.Controller.SearchPneumoDB - Jyo-Search:[[{"search_str":"9789_2#15","columns":"pss_lane_id","eq":"in"}]]
+[2016/01/15 15:44:30] [WARN] 77 PneumoDB.Controller.SearchPneumoDB - Jyo-PageLoad
+[2016/01/15 15:46:15] [WARN] 77 PneumoDB.Controller.SearchPneumoDB - Jyo-PageLoad
+[2016/01/15 15:46:15] [ERROR] 2000 Catalyst - Caught exception in PneumoDB::Controller::SearchPneumoDB->searchPneumoData "DBD::mysql::st fetchrow_hashref failed: fetch() without execute() at /Library/WebServer/CGI-Executables/PneumoDB/script/../lib/PneumoDB/Controller/SearchPneumoDB.pm line 141."
+[2016/01/15 15:46:19] [WARN] 77 PneumoDB.Controller.SearchPneumoDB - Jyo-PageLoad
+[2016/01/15 15:46:19] [ERROR] 2000 Catalyst - Caught exception in PneumoDB::Controller::SearchPneumoDB->searchPneumoData "DBD::mysql::st fetchrow_hashref failed: fetch() without execute() at /Library/WebServer/CGI-Executables/PneumoDB/script/../lib/PneumoDB/Controller/SearchPneumoDB.pm line 141."
+[2016/01/15 15:47:31] [WARN] 77 PneumoDB.Controller.SearchPneumoDB - Jyo-PageLoad
+[2016/01/15 15:47:31] [ERROR] 2000 Catalyst - Caught exception in PneumoDB::Controller::SearchPneumoDB->searchPneumoData "DBD::mysql::st fetchrow_hashref failed: fetch() without execute() at /Library/WebServer/CGI-Executables/PneumoDB/script/../lib/PneumoDB/Controller/SearchPneumoDB.pm line 141."
+[2016/01/15 15:47:49] [WARN] 77 PneumoDB.Controller.SearchPneumoDB - Jyo-PageLoad
+[2016/01/15 15:49:59] [WARN] 77 PneumoDB.Controller.SearchPneumoDB - Jyo-PageLoad
+[2016/01/15 15:50:04] [WARN] 77 PneumoDB.Controller.SearchPneumoDB - Jyo-PageLoad
+[2016/01/15 15:51:19] [WARN] 77 PneumoDB.Controller.SearchPneumoDB - Jyo-PageLoad
+[2016/01/15 15:55:24] [WARN] 77 PneumoDB.Controller.SearchPneumoDB - Jyo-PageLoad
+[2016/01/15 15:56:25] [WARN] 77 PneumoDB.Controller.SearchPneumoDB - Jyo-PageLoad
+[2016/01/15 15:56:55] [WARN] 77 PneumoDB.Controller.SearchPneumoDB - Jyo-PageLoad

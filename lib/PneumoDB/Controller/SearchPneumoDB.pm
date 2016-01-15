@@ -231,20 +231,22 @@ sub createQuery {
   my $col_prefix = '';
   my $search_str_map = {};
   my $search_str_start = qq {
-                          SELECT SQL_CALC_FOUND_ROWS $selected_columns_str FROM pneumodb_sequence_scape as SC
-                          LEFT JOIN pneumodb_sequence_data as S
-                              ON SC.pss_lane_id = S.psd_lane_id
-                          LEFT JOIN pneumodb_results as U
-                              ON (SC.pss_lane_id = U.prs_lane_id AND SC.pss_sanger_id = U.prs_sanger_id)
-                              OR (SC.pss_lane_id IS NULL AND SC.pss_sanger_id = U.prs_sanger_id)
-                          LEFT JOIN pneumodb_results_mlst as ML
-                              ON SC.pss_lane_id = ML.prm_lane_id
-                          LEFT JOIN pneumodb_results_antibiotic as A
-                              ON SC.pss_lane_id = A.pra_lane_id
-                          LEFT JOIN pneumodb_metadata as M
-                              ON SC.pss_public_name = M.pmd_public_name
-                          LEFT JOIN pneumodb_coordinates as C
-                              ON M.pmd_country = C.pco_location
+                              SELECT SQL_CALC_FOUND_ROWS $selected_columns_str FROM pneumodb_sequence_scape as SC
+                              LEFT JOIN pneumodb_sequence_data as S
+                                  ON SC.pss_lane_id = S.psd_lane_id
+                              LEFT JOIN pneumodb_results as U
+                                  ON (SC.pss_lane_id = U.prs_lane_id AND SC.pss_sanger_id = U.prs_sanger_id)
+                                  OR (SC.pss_lane_id IS NULL AND SC.pss_sanger_id = U.prs_sanger_id)
+                              LEFT JOIN pneumodb_results_mlst as ML
+                                  ON SC.pss_lane_id = ML.prm_lane_id
+                              LEFT JOIN pneumodb_results_antibiotic as A
+                                  ON SC.pss_lane_id = A.pra_lane_id
+                              LEFT JOIN pneumodb_metadata as M
+                                  ON SC.pss_public_name = M.pmd_public_name
+                              LEFT JOIN pneumodb_coordinates as C
+                                  ON M.pmd_country = C.pco_location
+                              LEFT JOIN pneumodb_studies as ST
+                                  ON SC.pss_study_id = ST.pst_study_id
                             };
 
   my $search_condition = '';
