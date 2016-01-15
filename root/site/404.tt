@@ -15,8 +15,8 @@
                 text-shadow: none;
             }
 
-            html { 
-                background: url("[% c.request.base %]/static/images/sad_dog.png") no-repeat center center fixed; 
+            html {
+                background: url("[% c.request.base %]/static/images/sad_dog.png") no-repeat center center fixed;
                 -webkit-background-size: cover;
                 -moz-background-size: cover;
                 -o-background-size: cover;
@@ -104,7 +104,7 @@
             <script type="text/javascript"
               src="http://linkhelp.clients.google.com/tbproxy/lh/wm/fixurl.js">
             </script>
-            Alternatively please contact <a href="mailto:gps@pneumogen.net?subject=GPS Dataviewer">gps@pneumogen.net</a><br><br>
+            Alternatively please contact <a href="mailto:gps@pneumogen.net?subject=PneumoDB Dataviewer">pneumodb@pneumogen.net</a><br><br>
         </div>
     </body>
 </html>

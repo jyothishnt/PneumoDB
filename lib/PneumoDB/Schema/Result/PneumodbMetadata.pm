@@ -505,8 +505,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("pmd_public_name");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-06-22 14:51:51
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:9/7xtrRy3yDb0zL63Y6vmw
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2016-01-15 10:29:21
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:po3aSAjeP+JiyNLxuGLbGg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

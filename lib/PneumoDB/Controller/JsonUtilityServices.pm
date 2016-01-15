@@ -3,7 +3,11 @@ use Moose;
 use namespace::autoclean;
 use JSON;
 use WWW::Mechanize;
-use PneumoDB::Controller::SearchGpsDB;
+use Spreadsheet::XLSX;
+use Spreadsheet::ParseExcel;
+use Text::CSV;
+use PneumoDB::Controller::SearchPneumoDB;
+use Try::Tiny;
 
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -25,7 +29,7 @@ Catalyst Controller.
 =cut
 
 
-# Get json formatted data for GPS project site - googlemap GeoJSON API
+# Get json formatted data for PneumoDB project site - googlemap GeoJSON API
 # This function takes a column name in pneumodb_metadata column and
 # generates a json with its disticnt column values and no. of entries
 sub getSampleCount :Path('/json/meta/') {
@@ -164,7 +168,7 @@ sub getSampleCountAuthorised :Path('/count/meta/') {
       $c->config->{pneumodb_dbh} = $dbh;
     }
 
-    my $prefix = PneumoDB::Controller::SearchGpsDB::getColumnPrefix($colname_search);
+    my $prefix = PneumoDB::Controller::SearchPneumoDB::getColumnPrefix($colname_search);
 
     my $q = qq {
       SELECT
@@ -173,6 +177,9 @@ sub getSampleCountAuthorised :Path('/count/meta/') {
         FROM pneumodb_sequence_scape as SC
         LEFT JOIN pneumodb_sequence_data as S
             ON SC.pss_lane_id = S.psd_lane_id
+        LEFT JOIN pneumodb_results as U
+            ON (SC.pss_lane_id = U.prs_lane_id AND SC.pss_sanger_id = U.prs_sanger_id)
+            OR (SC.pss_lane_id IS NULL AND SC.pss_sanger_id = U.prs_sanger_id)
         LEFT JOIN pneumodb_metadata as M
             ON SC.pss_public_name = M.pmd_public_name
         GROUP BY $prefix.$colname_search
@@ -210,12 +217,12 @@ sub populateSearch :Path('/populate_search/') {
     push @$colname_search, $args[0];
 
     my $search_data = {};
-    my $qString = &PneumoDB::Controller::SearchGpsDB::createQuery($search_data, $colname_search, 'search', $c);
+    my $qString = &PneumoDB::Controller::SearchPneumoDB::createQuery($search_data, $colname_search, 'search', $c);
     my $map = {};
 
     # Get unique list
     $qString =~s/SELECT/SELECT DISTINCT/i;
-    my $rs = &PneumoDB::Controller::SearchGpsDB::getSearchResults($qString, $c);
+    my $rs = &PneumoDB::Controller::SearchPneumoDB::getSearchResults($qString, $c);
 
     if($rs && $rs->{rows}) {
       # Process JSON to create an array of hash
@@ -245,8 +252,8 @@ sub getColumnData :Path('/get_column_data/') {
 
   if ($#$colArr >= 0) {
     my $search_data->{search_input} = ($postData->{search_input} ne '')? decode_json($postData->{search_input}) : ();
-    my $qString = &PneumoDB::Controller::SearchGpsDB::createQuery($search_data, $colArr, 'search', $c);
-    my $rs = &PneumoDB::Controller::SearchGpsDB::getSearchResults($qString, $c);
+    my $qString = &PneumoDB::Controller::SearchPneumoDB::createQuery($search_data, $colArr, 'search', $c);
+    my $rs = &PneumoDB::Controller::SearchPneumoDB::getSearchResults($qString, $c);
     if($rs) {
       # Send back json
       $c->res->body(to_json($rs));
@@ -260,6 +267,84 @@ sub getColumnData :Path('/get_column_data/') {
     # If no arguments then show the 404 template
     $c->res->body(to_json({'error' => 'Column name argument missing'}));
   }
+}
+
+sub parseXLSX {
+  my $fh = shift || die "Parse file not specified";
+  my $parsedData = {};
+  my $excel = Spreadsheet::XLSX -> new ($fh);
+
+  foreach my $sheet (@{$excel -> {Worksheet}}) {
+    $sheet -> {MaxRow} ||= $sheet -> {MinRow};
+     foreach my $row ($sheet -> {MinRow} +1 .. $sheet -> {MaxRow}) {
+      $sheet -> {MaxCol} ||= $sheet -> {MinCol};
+      foreach my $col ($sheet -> {MinCol} + 1 ..  $sheet -> {MaxCol}) {
+        my $lane = $sheet->{Cells}[$row][0]->{Val};
+        if (defined $lane) {
+          my $new_value = $sheet->{Cells}[$row][$col]->{Val};
+          push (@{$parsedData->{$lane}}, (defined $new_value) ? $new_value  : "");
+        }
+      }
+    }
+  }
+  return $parsedData;
+}
+
+sub parseXLS {
+  my $fh = shift || die "Parse file not specified";
+  my $parser   = Spreadsheet::ParseExcel->new();
+  my $workbook = $parser->parse($fh);
+  my $parsedData = {};
+  if ( !defined $workbook ) {
+      die $parser->error(), ".\n";
+  }
+
+  for my $worksheet ( $workbook->worksheets() ) {
+    my ( $row_min, $row_max ) = $worksheet->row_range();
+    my ( $col_min, $col_max ) = $worksheet->col_range();
+
+    for my $row ( $row_min+1 .. $row_max ) {
+      my $lane = $worksheet->get_cell( $row, 0 )->value();
+      for my $col ( $col_min + 1 .. $col_max ) {
+        my $cell = $worksheet->get_cell( $row, $col );
+        my $value = '';
+        if($cell) {
+          $value = $cell->value();
+        }
+        if($lane) {
+          push (@{$parsedData->{$lane}}, (defined $value)? $value : '');
+        }
+      }
+    }
+  }
+
+  return $parsedData;
+}
+
+sub parseCSV {
+  my $fh = shift || die "Parse file not specified";
+  my $parsedData = {};
+  my @arr;
+
+  my @rows;
+  my $csv = Text::CSV->new ( { binary => 1 } )  # should set binary attribute.
+                 or die "Cannot use CSV: ".Text::CSV->error_diag ();
+  my $col_header_flag = 1;
+  while ( my $row = $csv->getline( $fh )) {
+    if (!$col_header_flag) {
+      foreach my $val (@$row[1 .. $#$row]) {
+        if (defined $row->[0]) {
+          push @{$parsedData->{$row->[0]}}, (defined $val)? $val : '';
+        }
+      }
+    }
+    $col_header_flag = 0;
+  }
+  $csv->eof or $csv->error_diag();
+  close $fh;
+  $csv->eol ("\r\n");
+
+  return $parsedData;
 }
 
 =encoding utf8

@@ -65,7 +65,6 @@ sub auto : Private {
         return 0;
     }
 
-
     # User found, so return 1 to continue with processing after this 'auto'
     return 1;
 }
@@ -90,7 +89,7 @@ sub default :Path {
         $c->response->redirect($c->uri_for('/login'));
       }
       else{
-        $c->response->redirect($c->uri_for('/gps/data'));
+        $c->response->redirect($c->uri_for('/pneumodb/data'));
       }
     }
     $c->stash->{template} = 'site/404.tt';

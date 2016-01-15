@@ -29,7 +29,7 @@ sub index :Path :Args(0) {
 =cut
 sub change_password : Path('/changepassword/update') {
   my ( $self, $c, @args ) = @_;
-  my $schema = $c->model('gps::GpsUser');
+  my $schema = $c->model('pneumoDB::PneumodbUser');
   my $rs;
   my $res = {};
   # Logging
@@ -95,7 +95,7 @@ sub change_password : Path('/changepassword/update') {
         }
         else {
           $c->stash->{error_msg} = "User not found! Please check the username or password";
-        }      
+        }
     }
     else {
       $c->stash->{error_msg} = "Missing input!";

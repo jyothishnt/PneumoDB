@@ -1,12 +1,12 @@
 use utf8;
-package PneumoDB::Schema::Result::PneumodbUser;
+package PneumoDB::Schema::Result::PneumodbResultsMlst;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
 
 =head1 NAME
 
-PneumoDB::Schema::Result::PneumodbUser
+PneumoDB::Schema::Result::PneumodbResultsMlst
 
 =cut
 
@@ -30,98 +30,92 @@ extends 'DBIx::Class::Core';
 
 __PACKAGE__->load_components("InflateColumn::DateTime");
 
-=head1 TABLE: C<pneumodb_users>
+=head1 TABLE: C<pneumodb_results_mlst>
 
 =cut
 
-__PACKAGE__->table("pneumodb_users");
+__PACKAGE__->table("pneumodb_results_mlst");
 
 =head1 ACCESSORS
 
-=head2 pnu_id
-
-  data_type: 'integer'
-  is_nullable: 0
-
-=head2 pnu_username
+=head2 prm_lane_id
 
   data_type: 'text'
   is_nullable: 1
 
-=head2 pnu_password
-
-  data_type: 'varchar'
-  is_nullable: 1
-  size: 32
-
-=head2 pnu_email_address
+=head2 prm_aroe_insilico
 
   data_type: 'text'
   is_nullable: 1
 
-=head2 pnu_name
+=head2 prm_gdh_insilico
 
   data_type: 'text'
   is_nullable: 1
 
-=head2 pnu_institution
+=head2 prm_gki_insilico
 
   data_type: 'text'
   is_nullable: 1
 
-=head2 pnu_country
+=head2 prm_recp_insilico
 
   data_type: 'text'
   is_nullable: 1
 
-=head2 pnu_role
+=head2 prm_spi_insilico
 
   data_type: 'text'
   is_nullable: 1
 
-=head2 pnu_active
+=head2 prm_xpt_insilico
 
-  data_type: 'integer'
+  data_type: 'text'
+  is_nullable: 1
+
+=head2 prm_ddl_insilico
+
+  data_type: 'text'
   is_nullable: 1
 
 =cut
 
 __PACKAGE__->add_columns(
-  "pnu_id",
-  { data_type => "integer", is_nullable => 0 },
-  "pnu_username",
+  "prm_lane_id",
   { data_type => "text", is_nullable => 1 },
-  "pnu_password",
-  { data_type => "varchar", is_nullable => 1, size => 32 },
-  "pnu_email_address",
+  "prm_aroe_insilico",
   { data_type => "text", is_nullable => 1 },
-  "pnu_name",
+  "prm_gdh_insilico",
   { data_type => "text", is_nullable => 1 },
-  "pnu_institution",
+  "prm_gki_insilico",
   { data_type => "text", is_nullable => 1 },
-  "pnu_country",
+  "prm_recp_insilico",
   { data_type => "text", is_nullable => 1 },
-  "pnu_role",
+  "prm_spi_insilico",
   { data_type => "text", is_nullable => 1 },
-  "pnu_active",
-  { data_type => "integer", is_nullable => 1 },
+  "prm_xpt_insilico",
+  { data_type => "text", is_nullable => 1 },
+  "prm_ddl_insilico",
+  { data_type => "text", is_nullable => 1 },
 );
 
-=head1 PRIMARY KEY
+=head1 UNIQUE CONSTRAINTS
+
+=head2 C<prm_index>
 
 =over 4
 
-=item * L</pnu_id>
+=item * L</prm_lane_id>
 
 =back
 
 =cut
 
-__PACKAGE__->set_primary_key("pnu_id");
+__PACKAGE__->add_unique_constraint("prm_index", ["prm_lane_id"]);
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2016-01-15 10:29:21
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:dEHZQ1yX6Hbb8jfydU+IeA
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2016-01-15 12:33:21
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:g/3PUiXA8t+jbdsRLXWv4A
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

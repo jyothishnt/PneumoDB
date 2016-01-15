@@ -6,7 +6,7 @@ BEGIN { extends 'Catalyst::Controller'; }
 
 =head1 NAME
 
-PneumoDB::Controller::SiteLoad - Catalyst Controller
+DBConnect::Controller::SiteLoad - Catalyst Controller
 
 =head1 DESCRIPTION
 
@@ -24,7 +24,7 @@ Catalyst Controller.
 
 # Function that gets called for loading the initial page.
 # This sends db columns as a 2D array to the template
-sub gpsDataDisplayMain :Path('/pneumodb/data/') :Args(0) {
+sub pneumoDataDisplayMain :Path('/pneumodb/data/') :Args(0) {
   my ( $self, $c ) = @_;
   my @col_arr = ();
   my $col = ();
@@ -43,6 +43,20 @@ sub gpsDataDisplayMain :Path('/pneumodb/data/') :Args(0) {
   push(@col_arr, @col_arr_gup);
   push(@{$col}, [@col_arr_gup]);
 
+  # Pushing columns from PneumoDB results table
+  my $schema_gmlst = $c->model('PneumoDB::PneumodbResultsMlst');
+  my @col_arr_gmlst = $schema_gmlst->result_source->columns;
+  splice (@col_arr_gmlst,0,1);
+  push(@col_arr, @col_arr_gmlst);
+  push(@{$col}, [@col_arr_gmlst]);
+
+  # Pushing columns from PneumoDB results table
+  my $schema_ganti = $c->model('PneumoDB::PneumodbResultsAntibiotic');
+  my @col_arr_ganti = $schema_ganti->result_source->columns;
+  splice (@col_arr_ganti,0,1);
+  push(@col_arr, @col_arr_ganti);
+  push(@{$col}, [@col_arr_ganti]);
+
   # Pushing columns from sequence data table
   my $schema_gsd = $c->model('PneumoDB::PneumodbSequenceData');
   my @col_arr_gsd = $schema_gsd->result_source->columns;
@@ -59,6 +73,14 @@ sub gpsDataDisplayMain :Path('/pneumodb/data/') :Args(0) {
   push(@col_arr, @col_arr_gmd);
   splice (@col_arr_gmd,1,1);
   push(@{$col}, [@col_arr_gmd]);
+
+  # Pushing columns from metadata table
+  my $schema_coord = $c->model('PneumoDB::PneumodbCoordinates');
+  my @col_arr_coord = $schema_coord->result_source->columns;
+  push(@col_arr, @col_arr_coord);
+  splice (@col_arr_coord,0,1);
+  push(@{$col}, [@col_arr_coord]);
+
 
   #$c->stash->{search_columns} = to_json(\@col_arr);
   $c->stash->{pneumodb_column_2d_array} = to_json($col);

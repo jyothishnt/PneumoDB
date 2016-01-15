@@ -58,13 +58,16 @@ var showGrid = function(fl){
     //sortName: 'psd_public_name',
     //sortOrder: 'desc',
     rowStyler: function(index,row){
-      if (row.prs_decision == 0 && row.prs_decision != ""){
+      if (row.prs_pneumo_qc == "Fail" && row.prs_pneumo_qc != ""){
         return 'color:#cc0000;'; // return inline style
         // the function can return predefined css class and inline style
         // return {class:'r1', style:{'color:#fff'}};
       }
-      else if (row.prs_decision == -1 && row.prs_decision != ""){
+      else if (row.prs_pneumo_qc == "Pending" && row.prs_pneumo_qc != ""){
         return 'font-weight:bold;color:teal'; // return inline style
+      }
+      else if (row.prs_pneumo_qc == "Non Pneumo" && row.prs_pneumo_qc != ""){
+        return 'color:#ccc'; // return inline style
       }
     },
     pagination: true,
@@ -340,16 +343,16 @@ var exportData = function(extn) {
     var arr = new Array();
     // Decision flag is used to check if the selected row has been excluded or not. Excluded data are not given for download
     // Currently allowing all download. So below statement is set to false
-    var all_decision_0 = false;
+    var allPneumoQCFail = false;
     jQuery.each(chkdArr, function(ind, row) {
-      // if(row.prs_decision != 0){
-      //   all_decision_0 = false;
-      // }
+      if(row.prs_pneumo_qc != "Fail") {
+        allPneumoQCFail = false;
+      }
       var t = {};
       t['pss_sanger_id'] = row.pss_sanger_id;
       arr.push(t);
     })
-    if(all_decision_0) {
+    if(allPneumoQCFail) {
       showMsg('Samples you have selected are categorized as not good and thus not available for download!');
       return;
     }
@@ -402,7 +405,7 @@ xmlns:o="urn:schemas-microsoft-com:office:office"\n\
 xmlns:x="urn:schemas-microsoft-com:office:excel"\n\
 xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"\n\
 xmlns:html="http://www.w3.org/TR/REC-html40">\n\
-<Worksheet ss:Name="GPS_statistics_and_metadata">\n\
+<Worksheet ss:Name="PneumoDB_statistics_and_metadata">\n\
 <Table>\n';
 }
 var emitXmlFooter = function() {
@@ -514,11 +517,11 @@ function JSONtoCSV(arrData) {
 }
 
 // Function to include all checked rows
-var updateDecision = function(decisionVal) {
+var updateDecision = function(pneumoQCVal) {
   $('#dg').edatagrid('acceptChanges');
 
   if (selectAllMeansSelectEntireData) {
-    updateAllDecision(decisionVal);
+    updateAllDecision(pneumoQCVal);
   }
   else {
     var chkdArr = getChecked('#dg');
@@ -531,7 +534,7 @@ var updateDecision = function(decisionVal) {
         t.pss_public_name = row.pss_public_name;
         arr.push(t);
       });
-      sendForDecisionUpdate(arr, decisionVal);
+      sendForDecisionUpdate(arr, pneumoQCVal);
     }
   }
 };
@@ -547,7 +550,7 @@ var getChecked = function(gridEleId){
   }
 
 }
-var updateAllDecision = function(decisionVal) {
+var updateAllDecision = function(pneumoQCVal) {
   // Get search input if search is active
   var search_input;
   if(search_query && search_query.search_input) {
@@ -569,7 +572,7 @@ var updateAllDecision = function(decisionVal) {
         showMsg(str,'danger');
       }
       else {
-        sendForDecisionUpdate(data.rows, decisionVal)
+        sendForDecisionUpdate(data.rows, pneumoQCVal)
       }
     },
     error: function(jqXHR, textStatus, errorThrown) {
@@ -585,7 +588,7 @@ var updateAllDecision = function(decisionVal) {
   });
 };
 
-var sendForDecisionUpdate = function(dataArr, decisionVal) {
+var sendForDecisionUpdate = function(dataArr, pneumoQCVal) {
   if(dataArr.length > 0) {
     $.ajax({
       url: base_request_url + '/pneumodb/update/decision',
@@ -593,7 +596,7 @@ var sendForDecisionUpdate = function(dataArr, decisionVal) {
       cache:false,
       data: {
         'data' : JSON.stringify(dataArr),
-        'type' : decisionVal
+        'type' : pneumoQCVal
       },
       dataType: 'JSON',
       beforeSend: block_screen('Updating data'),
@@ -643,7 +646,7 @@ var dgcolumns = new Array();
 var editable_columns = new Array();
 editable_columns = ['prs_comments', 'prs_in_silico_st', 'prs_in_silico_serotype', 'prs_baps_1', 'prs_baps_2', 'prs_vaccine_status', 'prs_vaccine_period'];
 var visible_columns = new Array();
-visible_columns = ['pss_sanger_id', 'pss_public_name', 'pss_lane_id', 'psd_total_length', 'pss_total_yield', 'prs_comments' ];
+visible_columns = ['pss_study_id', 'pss_sanger_id', 'pss_public_name', 'pss_lane_id', 'psd_total_length', 'pss_total_yield', 'prs_comments' ];
 var exclude_columns = new Array();
 exclude_columns = [];
 var selectAllMeansSelectEntireData = false;
@@ -1201,12 +1204,23 @@ function showUpdateSTWindow() {
 }
 
 $("select[name='st_update_type']").change( function() {
-  if($("select[name='st_update_type']").val() == '') {
+  var selectVal = $("select[name='st_update_type']").val();
+
+  if(selectVal == '') {
     $('.st_upload_tip').html('');
   }
   var str = 'Input file must contain 2 columns <br> <span class="red">Lane ID</span> (Text) and <span class="red">'
-            + sliced_column($("select[name='st_update_type']").val())
-            + '</span>'
+            + sliced_column(selectVal)
+            + '</span>';
+
+  if (selectVal === "mlst") {
+    str = 'Input file must contain the <br> <span class="red">Lane ID</span> column followed by <span class="red"> mlst profile columns </span>'+
+          'in the following order <br> <div class="bulk-upload-column-display blue"> aroe gdh gki recp spi xpt ddl </div>';
+  }
+  if (selectVal === "antibiotic") {
+    str = 'Input file must contain the <br> <span class="red">Lane ID</span> column followed by <span class="red"> antibiotic profile columns </span>'+
+          'in the following order <div class="bulk-upload-column-display blue"> lane  VanS_F_1_AF155139 aac3_IIa_X13543 aacA_AB304512 aac_3_IVa_1_X01385  aac_6prime_Ii_1_L12710  aac_6prime_aph_2primeprime__1_M13771  aadA2 aadB_1_JN119852 aadD_1_AF181950 ant_6_Ia_1_AF330699 aph_3prime_III_1_M26832 arsB_M86824 blaTEM1_1_JF910132  blaTEM33_1_GU371926 blaZ_34_AP003139  blaZ_35_AJ302698  blaZ_36_AJ400722  blaZ_39_BX571856  cadA_BX571856 cadD_BX571858 catQ_1_M55620 cat_5_U35036  cat_pC194_1_NC_002013 cat_pC221_1_X02529  cat_pC233_1_AY355285  catpC194_1_NC_002013  catpC221_1_X02529 catpC233_1_AY355285 cmx_1_U85507  dfrA12_1_AB571791 dfrA14_1_DQ388123 dfrC_1_GU565967 dfrC_1_Z48233 dfrG_1_AB205645 ermA_2_AF002716 ermB_10_U86375  ermB_16_X82819  ermB_18_X66468  ermB_20_AF109075  ermB_6_AF242872 ermC_13_M13761  fexA_1_AJ549214 fosA_8_ACHE01000077 fosB_1_X54227 fusA_17_DQ866810  fusB_1_AM292600 fusD_AP008934 ileS2_GU237136  lnuA_1_M14039 lsaC_1_HM990671 mecA_10_AB512767  mecA_15_AB505628  mefA_10_AF376746  mefA_3_AF227521 mefE_AE007317 merA_L29436 merB_L29436 merR_L29436 mphA_1_D16251 mphB_1_D85892 mphC_2_AF167161 msrA_1_X52085 msrC_2_AF313494 msrD_2_AF274302 msrD_3_AF227520 qacA_AP0003367  qepA_1_AB263754 smr_qacC_M37889 strA_1_M96392 strA_4_NC_003384  strB_1_M96392 str_1_X92946  str_2_FN435330  sul1_1_AY224185 sul1_9_AY963803 sul2_9_FJ197818 tet32_2_EF626943  tet38_3_FR821779  tetB_4_AF326777 tetG_4_AF133140 tetK_4_U38428 tetL_2_M29725 tetL_6_X08034 tetM_10_EU182585  tetM_12_FR671418  tetM_13_AM990992  tetM_1_X92947 tetM_2_X90939 tetM_4_X75073 tetM_5_U58985 tetM_6_M21136 tetM_8_X04388 tetO_1_M18896 tetO_3_Y07780 tetR_sgi1 tetS_3_X92946 vgaA_1_M90056 </div>';
+  }
   $('.st_upload_tip').html(str);
 });
 
@@ -1215,9 +1229,9 @@ function st_update_validator() {
     showMsg('Please select your file to upload!');
     return false;
   }
-  var reg = /\.xlsx$|\.xls$$/;
+  var reg = /\.xlsx$|\.xls$|\.csv$/;
   if(!reg.test($('#st_update_file').val())) {
-    showMsg('Invalid file. Only .xls and .xlsx files are valid!');
+    showMsg('Invalid file. Only .xls, .xlsx and .csv files are valid!');
     return false;
   }
 
@@ -1267,10 +1281,10 @@ function st_update_validator() {
      }
     },
     complete: function(xhr) {
-      // $('#dg').datagrid('reload');
-      // changePaginationText(paginationOriginalText);
-      // // $('.update_st_form_container').window('close');
-      // $('.st_upload_tip').html('');
+      $('#dg').datagrid('reload');
+      changePaginationText(paginationOriginalText);
+      // $('.update_st_form_container').window('close');
+      $('.st_upload_tip').html('');
       unblock_screen();
     },
     error: function(jqXHR, textStatus, errorThrown) {
@@ -1292,7 +1306,7 @@ function downloadZipFiles(type) {
     if(chkdArr.length > 0) {
       $.each(chkdArr, function(ind, row) {
         // Push only if lane id is present
-        if(row.pss_lane_id != "" && row.pss_lane_id != undefined && row.prs_decision != 0 )
+        if(row.pss_lane_id != "" && row.pss_lane_id != undefined && row.prs_pneumo_qc != 0 )
           arr.push(row.pss_lane_id);
       });
       if(arr.length <= 0) {
@@ -1551,7 +1565,7 @@ var downloadAllGCImages = function(){
   }
   var content = zip.generate({type:"blob"});
   // see FileSaver.js
-  saveAs(content, "GPS_dataviewer_GC_images.zip");
+  saveAs(content, "PneumoDB_dataviewer_GC_images.zip");
 }
 
 /**************************   BLOCK SCREEN FOR PROCESSING   ******************************/

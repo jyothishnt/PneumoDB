@@ -50,9 +50,9 @@ __PACKAGE__->table("pneumodb_results");
   is_nullable: 1
   size: 30
 
-=head2 prs_decision
+=head2 prs_pneumo_qc
 
-  data_type: 'integer'
+  data_type: 'text'
   is_nullable: 1
 
 =head2 prs_comments
@@ -113,8 +113,8 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => 30 },
   "prs_lane_id",
   { data_type => "varchar", is_nullable => 1, size => 30 },
-  "prs_decision",
-  { data_type => "integer", is_nullable => 1 },
+  "prs_pneumo_qc",
+  { data_type => "text", is_nullable => 1 },
   "prs_comments",
   { data_type => "text", is_nullable => 1 },
   "prs_in_silico_st",
@@ -142,8 +142,8 @@ __PACKAGE__->add_columns(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-06-22 14:51:51
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:pozWJoHqPtXukZ9pL9zFlg
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2016-01-15 10:29:21
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+bS52wLl6gQg9nldfD28Cw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

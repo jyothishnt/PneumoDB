@@ -41,7 +41,7 @@ __PACKAGE__->table("pneumodb_coordinates");
 =head2 pco_location
 
   data_type: 'text'
-  is_nullable: 1
+  is_nullable: 0
 
 =head2 pco_latitude
 
@@ -57,16 +57,28 @@ __PACKAGE__->table("pneumodb_coordinates");
 
 __PACKAGE__->add_columns(
   "pco_location",
-  { data_type => "text", is_nullable => 1 },
+  { data_type => "text", is_nullable => 0 },
   "pco_latitude",
   { data_type => "float", is_nullable => 1 },
   "pco_longitude",
   { data_type => "float", is_nullable => 1 },
 );
 
+=head1 PRIMARY KEY
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2015-06-22 15:46:27
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:7zO0+KXAEh2ce/IwSc1HXg
+=over 4
+
+=item * L</pco_location>
+
+=back
+
+=cut
+
+__PACKAGE__->set_primary_key("pco_location");
+
+
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2016-01-15 10:29:21
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:UcS0v4OuFGUt9BGOtgrDhA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

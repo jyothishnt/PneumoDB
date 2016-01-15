@@ -1,4 +1,4 @@
-package PneumoDB::Controller::SearchGpsDB;
+package PneumoDB::Controller::SearchPneumoDB;
 use Moose;
 use namespace::autoclean;
 use JSON;
@@ -8,7 +8,7 @@ BEGIN { extends 'Catalyst::Controller'; }
 
 =head1 NAME
 
-PneumoDB::Controller::SearchGpsDB - Catalyst Controller
+PneumoDB::Controller::SearchPneumoDB - Catalyst Controller
 
 =head1 DESCRIPTION
 
@@ -24,9 +24,9 @@ Catalyst Controller.
 =cut
 
 
-# Search gps data
-# Fetching sequence data from gps db
-sub searchGPSData :Path('/pneumodb/json/') {
+# Search Pneumo data
+# Fetching sequence data from Pneumo db
+sub searchPneumoData :Path('/pneumodb/json/') {
   my ( $self, $c, @args ) = @_;
   # Logging
   my $log_str = '';
@@ -105,31 +105,47 @@ sub searchGPSData :Path('/pneumodb/json/') {
 
 sub getColumnPrefix {
   my $col = shift;
-  return ($col =~ /^pmd/)? 'M': (($col =~ /^psd/)? 'S': (($col =~ /^pss/)? 'SC':'U'));
+  if ($col =~/^pmd/) {
+    return 'M';
+  }
+  if ($col =~/^psd/) {
+    return 'S';
+  }
+  if ($col =~/^pss/) {
+    return 'SC';
+  }
+  if ($col =~/^prs/) {
+    return 'U';
+  }
+  if ($col =~/^pra/) {
+    return 'A';
+  }
+  if ($col =~/^prm/) {
+    return 'ML';
+  }
 }
-
 sub getSearchResults() {
   my ($qString, $c) = @_;
   my $resultSet = {};
   my $t_arr = ();
   $resultSet->{rows} = [];
 
-  # Get repeat map
-  my $sscapeRepeatMap = getSScapeMapForRepeats($c);
-  my $metadataRepeatMap = getMetadataMapForRepeats($sscapeRepeatMap->{public_name_orig_arr}, $c);
-  my $publicNameRepeat_metadataMap = createPublicNameRepeatMetadataMap($sscapeRepeatMap, $metadataRepeatMap);
+  # # Get repeat map
+  # my $sscapeRepeatMap = getSScapeMapForRepeats($c);
+  # my $metadataRepeatMap = getMetadataMapForRepeats($sscapeRepeatMap->{public_name_orig_arr}, $c);
+  # my $publicNameRepeat_metadataMap = createPublicNameRepeatMetadataMap($sscapeRepeatMap, $metadataRepeatMap);
 
   my $sth = checkPneumoDBionAndExecute($qString, $c);
 
   # Push metadata to the final map
   while(my $row = $sth->fetchrow_hashref) {
-    if($row->{pss_public_name} && $publicNameRepeat_metadataMap && $publicNameRepeat_metadataMap->{$row->{pss_public_name}}) {
-      # Merge the metadata into each row if metedata is defined.
-      # This is done by converting them into a list context and then assigning it to a hash
-      # which will convert back to a hash. The first hash values will be overwritten by the second hash values.
-      my %mergeMap = (%$row, %{$publicNameRepeat_metadataMap->{$row->{pss_public_name}}});
-      $row = \%mergeMap;
-    }
+    # if($row->{pss_public_name} && $publicNameRepeat_metadataMap && $publicNameRepeat_metadataMap->{$row->{pss_public_name}}) {
+    #   # Merge the metadata into each row if metedata is defined.
+    #   # This is done by converting them into a list context and then assigning it to a hash
+    #   # which will convert back to a hash. The first hash values will be overwritten by the second hash values.
+    #   my %mergeMap = (%$row, %{$publicNameRepeat_metadataMap->{$row->{pss_public_name}}});
+    #   $row = \%mergeMap;
+    # }
     push(@{$resultSet->{rows}}, $row);
   }
 
@@ -153,10 +169,10 @@ sub getDownloadResults {
   my $resultSet = {};
   my $t_arr = ();
 
-  # Get repeat map
-  my $sscapeRepeatMap = getSScapeMapForRepeats($c);
-  my $metadataRepeatMap = getMetadataMapForRepeats($sscapeRepeatMap->{public_name_orig_arr}, $c);
-  my $publicNameRepeat_metadataMap = createPublicNameRepeatMetadataMap($sscapeRepeatMap, $metadataRepeatMap);
+  # # Get repeat map
+  # my $sscapeRepeatMap = getSScapeMapForRepeats($c);
+  # my $metadataRepeatMap = getMetadataMapForRepeats($sscapeRepeatMap->{public_name_orig_arr}, $c);
+  # my $publicNameRepeat_metadataMap = createPublicNameRepeatMetadataMap($sscapeRepeatMap, $metadataRepeatMap);
 
   my $sth = checkPneumoDBionAndExecute($qString, $c);
 
@@ -174,13 +190,13 @@ sub getDownloadResults {
     if($sth->rows > 0) {
       while(my $row = $sth->fetchrow_hashref) {
 
-        if($row->{pss_public_name} && $publicNameRepeat_metadataMap && $publicNameRepeat_metadataMap->{$row->{pss_public_name}}) {
-          # Merge the metadata into each row if metedata is defined.
-          # This is done by converting them into a list context and then assigning it to a hash
-          # which will convert back to a hash. The first hash values will be overwritten by the second hash values.
-          my %mergeMap = (%$row, %{$publicNameRepeat_metadataMap->{$row->{pss_public_name}}});
-          $row = \%mergeMap;
-        }
+        # if($row->{pss_public_name} && $publicNameRepeat_metadataMap && $publicNameRepeat_metadataMap->{$row->{pss_public_name}}) {
+        #   # Merge the metadata into each row if metedata is defined.
+        #   # This is done by converting them into a list context and then assigning it to a hash
+        #   # which will convert back to a hash. The first hash values will be overwritten by the second hash values.
+        #   my %mergeMap = (%$row, %{$publicNameRepeat_metadataMap->{$row->{pss_public_name}}});
+        #   $row = \%mergeMap;
+        # }
 
         $t_arr = ();
         foreach my $colname (@$selected_columns_arr) {
@@ -221,8 +237,14 @@ sub createQuery {
                           LEFT JOIN pneumodb_results as U
                               ON (SC.pss_lane_id = U.prs_lane_id AND SC.pss_sanger_id = U.prs_sanger_id)
                               OR (SC.pss_lane_id IS NULL AND SC.pss_sanger_id = U.prs_sanger_id)
+                          LEFT JOIN pneumodb_results_mlst as ML
+                              ON SC.pss_lane_id = ML.prm_lane_id
+                          LEFT JOIN pneumodb_results_antibiotic as A
+                              ON SC.pss_lane_id = A.pra_lane_id
                           LEFT JOIN pneumodb_metadata as M
-                              ON (SC.pss_public_name = M.pmd_public_name)
+                              ON SC.pss_public_name = M.pmd_public_name
+                          LEFT JOIN pneumodb_coordinates as C
+                              ON M.pmd_country = C.pco_location
                             };
 
   my $search_condition = '';
@@ -440,6 +462,7 @@ sub checkPneumoDBionAndExecute() {
   return $sth;
 }
 
+# Creating NAME_R1 => NAME map
 sub getSScapeMapForRepeats {
   my $c = shift;
   my $map = {};

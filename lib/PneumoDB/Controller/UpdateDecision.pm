@@ -42,9 +42,29 @@ sub updateDecision : Path('/pneumodb/update/decision') {
   my ($q1, $q2);
   my ($sth1, $sth2);
   my $now;
-  $q1 = qq{UPDATE pneumodb_results SET prs_decision = ?, prs_updated_on = now() WHERE prs_sanger_id = ? AND prs_lane_id = ?};
+  my $type_text;
+  if($type == -1) {
+    $type_text = "Pending";
+  }
+  elsif($type == 0) {
+    $type_text = "Fail";
+  }
+  elsif($type == 1) {
+    $type_text = "Pass";
+  }
+  elsif($type == 2) {
+    $type_text = "Pass Plus";
+  }
+  elsif($type == 3) {
+    $type_text = "Non Pneumo";
+  }
+  else {
+    $type_text = "Unknown";
+  }
+
+  $q1 = qq{UPDATE pneumodb_results SET prs_pneumo_qc = ?, prs_updated_on = now() WHERE prs_sanger_id = ? AND prs_lane_id = ?};
   $sth1 = $c->config->{pneumodb_dbh}->prepare($q1) or die "Could not save! Error while preparing query - $!";
-  $q2 = qq{UPDATE pneumodb_results SET prs_decision = ?, prs_updated_on = now() WHERE prs_sanger_id = ? AND prs_lane_id IS NULL};
+  $q2 = qq{UPDATE pneumodb_results SET prs_pneumo_qc = ?, prs_updated_on = now() WHERE prs_sanger_id = ? AND prs_lane_id IS NULL};
   $sth2 = $c->config->{pneumodb_dbh}->prepare($q2) or die "Could not save! Error while preparing query - $!";
   my $success = {};
   foreach my $row (@{$postData}) {
@@ -53,7 +73,7 @@ sub updateDecision : Path('/pneumodb/update/decision') {
       if(defined $row->{pss_lane_id} && defined $row->{pss_sanger_id}) {
         $rs = $schema->search({ 'prs_lane_id' => $row->{pss_lane_id} });
         if($rs->count) {
-          $sth1->execute($type, $row->{pss_sanger_id}, $row->{pss_lane_id}) or die "Could not save! Error while executing query - $!";
+          $sth1->execute($type_text, $row->{pss_sanger_id}, $row->{pss_lane_id}) or die "Could not save! Error while executing query - $!";
         }
         else {
           $res = {'err' => 'Error occured while saving', 'errMsg' => qq{Lane ID not found in the database}};
@@ -66,7 +86,7 @@ sub updateDecision : Path('/pneumodb/update/decision') {
       elsif(defined $row->{pss_sanger_id}) {
         $rs = $schema->search({ 'prs_sanger_id' => $row->{pss_sanger_id}});
         if($rs->count) {
-          $sth2->execute($type, $row->{pss_sanger_id}) or die "Could not save! Error while executing query - $!";
+          $sth2->execute($type_text, $row->{pss_sanger_id}) or die "Could not save! Error while executing query - $!";
           # For counting the total no. of rows updated. This include all the duplicate rows for each public name in the postData list
         }
         else {
@@ -109,30 +129,30 @@ sub updateDecision : Path('/pneumodb/update/decision') {
           my $sample_outcome;
           # Creating a string for mysql string search with all the sanger ids for the given public name
           my $t_sam_str = '"'.join('","',@$t_arr).'"';
-          $q = qq{SELECT prs_decision FROM pneumodb_results where prs_sanger_id IN ($t_sam_str)};
+          $q = qq{SELECT prs_pneumo_qc FROM pneumodb_results where prs_sanger_id IN ($t_sam_str)};
           $sth = $c->config->{pneumodb_dbh}->prepare($q) or die "Could not save! Error while preparing query - $!";
           $sth->execute() or die "Could not save! Error while preparing query - $!";
           if($sth->rows() > 0) {
             while(my $arr = $sth->fetchrow_arrayref()) {
               my $dec = $arr->[0];
-              # If there is atleast one sample with decision 1, then sample is completed
-              if($dec == 1 || $dec == 2) {
+              # If there is atleast one sample with decision 1/2/3, then sample is completed
+              if($dec eq "Pass" || $dec eq "Pass Plus" || $dec eq "Non Pneumo") {
                 $sample_outcome = 'Sample completed';
                 last;
               }
-              elsif($dec == -1) {
+              elsif($dec eq "Pending") {
                 # If there is atleast one sample with decision -1, then sample is in progress
                 $sample_outcome = 'Sample in progress';
                 last;
               }
-              elsif($dec == 0) {
+              elsif($dec eq "Fail") {
                 # If decision(in db)  = 0 and current decision = 1, then sample completed. Else failed
                 ($type == 1)?$sample_outcome = 'Sample Completed' : $sample_outcome = 'Sample failed';
               }
             }
           }
           else {
-            $res = {'err' => 'Error', 'errMsg' => "$row->{pss_public_name} not found in GPS Results table"};
+            $res = {'err' => 'Error', 'errMsg' => "$row->{pss_public_name} not found in PneumoDB Results table"};
             $c->config->{pneumodb_dbh}->rollback;
             $c->res->body(to_json($res));
             return;
