@@ -41,7 +41,7 @@ __PACKAGE__->table("pneumodb_sequence_scape");
 =head2 pss_study_id
 
   data_type: 'varchar'
-  is_nullable: 1
+  is_nullable: 0
   size: 30
 
 =head2 pss_sanger_id
@@ -58,7 +58,8 @@ __PACKAGE__->table("pneumodb_sequence_scape");
 =head2 pss_lane_id
 
   data_type: 'varchar'
-  is_nullable: 1
+  default_value: (empty string)
+  is_nullable: 0
   size: 30
 
 =head2 pss_q20_yield_forward_read
@@ -89,13 +90,13 @@ __PACKAGE__->table("pneumodb_sequence_scape");
 
 __PACKAGE__->add_columns(
   "pss_study_id",
-  { data_type => "varchar", is_nullable => 1, size => 30 },
+  { data_type => "varchar", is_nullable => 0, size => 30 },
   "pss_sanger_id",
   { data_type => "varchar", is_nullable => 1, size => 30 },
   "pss_public_name",
   { data_type => "text", is_nullable => 1 },
   "pss_lane_id",
-  { data_type => "varchar", is_nullable => 1, size => 30 },
+  { data_type => "varchar", default_value => "", is_nullable => 0, size => 30 },
   "pss_q20_yield_forward_read",
   { data_type => "integer", extra => { unsigned => 1 }, is_nullable => 1 },
   "pss_q20_yield_reverse_read",
@@ -110,9 +111,21 @@ __PACKAGE__->add_columns(
   },
 );
 
+=head1 PRIMARY KEY
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2016-01-15 10:29:21
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:T3p8Ve1PUV3gwaeCWrdYiQ
+=over 4
+
+=item * L</pss_lane_id>
+
+=back
+
+=cut
+
+__PACKAGE__->set_primary_key("pss_lane_id");
+
+
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2016-01-19 11:43:04
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:8uQH0umwg6DrYrgZhpo72A
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -41,6 +41,7 @@ __PACKAGE__->table("pneumodb_sequence_data");
 =head2 psd_lane_id
 
   data_type: 'varchar'
+  default_value: (empty string)
   is_nullable: 0
   size: 30
 
@@ -134,7 +135,7 @@ __PACKAGE__->table("pneumodb_sequence_data");
 
 __PACKAGE__->add_columns(
   "psd_lane_id",
-  { data_type => "varchar", is_nullable => 0, size => 30 },
+  { data_type => "varchar", default_value => "", is_nullable => 0, size => 30 },
   "psd_sanger_id",
   { data_type => "varchar", is_nullable => 1, size => 30 },
   "psd_public_name",
@@ -171,9 +172,21 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 1 },
 );
 
+=head1 PRIMARY KEY
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2016-01-15 10:29:21
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Xpm++d+DgDOP+NDB7AicZg
+=over 4
+
+=item * L</psd_lane_id>
+
+=back
+
+=cut
+
+__PACKAGE__->set_primary_key("psd_lane_id");
+
+
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2016-01-19 11:43:04
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/NOezQi9PdCZ8q/YHZBYJA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

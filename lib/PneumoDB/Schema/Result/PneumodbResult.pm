@@ -47,7 +47,8 @@ __PACKAGE__->table("pneumodb_results");
 =head2 prs_lane_id
 
   data_type: 'varchar'
-  is_nullable: 1
+  default_value: (empty string)
+  is_nullable: 0
   size: 30
 
 =head2 prs_pneumo_qc
@@ -112,7 +113,7 @@ __PACKAGE__->add_columns(
   "prs_sanger_id",
   { data_type => "varchar", is_nullable => 1, size => 30 },
   "prs_lane_id",
-  { data_type => "varchar", is_nullable => 1, size => 30 },
+  { data_type => "varchar", default_value => "", is_nullable => 0, size => 30 },
   "prs_pneumo_qc",
   { data_type => "text", is_nullable => 1 },
   "prs_comments",
@@ -141,9 +142,21 @@ __PACKAGE__->add_columns(
   { data_type => "text", is_nullable => 1 },
 );
 
+=head1 PRIMARY KEY
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2016-01-15 10:29:21
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+bS52wLl6gQg9nldfD28Cw
+=over 4
+
+=item * L</prs_lane_id>
+
+=back
+
+=cut
+
+__PACKAGE__->set_primary_key("prs_lane_id");
+
+
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2016-01-19 11:43:04
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:wWYzI/sp5AHQWHXc7pBRrg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
