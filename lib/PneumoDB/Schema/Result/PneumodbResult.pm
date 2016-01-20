@@ -40,16 +40,13 @@ __PACKAGE__->table("pneumodb_results");
 
 =head2 prs_sanger_id
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 30
 
 =head2 prs_lane_id
 
-  data_type: 'varchar'
-  default_value: (empty string)
+  data_type: 'text'
   is_nullable: 0
-  size: 30
 
 =head2 prs_pneumo_qc
 
@@ -67,11 +64,6 @@ __PACKAGE__->table("pneumodb_results");
   is_nullable: 1
 
 =head2 prs_in_silico_serotype
-
-  data_type: 'text'
-  is_nullable: 1
-
-=head2 prs_sample_outcome
 
   data_type: 'text'
   is_nullable: 1
@@ -111,9 +103,9 @@ __PACKAGE__->table("pneumodb_results");
 
 __PACKAGE__->add_columns(
   "prs_sanger_id",
-  { data_type => "varchar", is_nullable => 1, size => 30 },
+  { data_type => "text", is_nullable => 1 },
   "prs_lane_id",
-  { data_type => "varchar", default_value => "", is_nullable => 0, size => 30 },
+  { data_type => "text", is_nullable => 0 },
   "prs_pneumo_qc",
   { data_type => "text", is_nullable => 1 },
   "prs_comments",
@@ -121,8 +113,6 @@ __PACKAGE__->add_columns(
   "prs_in_silico_st",
   { data_type => "text", is_nullable => 1 },
   "prs_in_silico_serotype",
-  { data_type => "text", is_nullable => 1 },
-  "prs_sample_outcome",
   { data_type => "text", is_nullable => 1 },
   "prs_updated_on",
   {
@@ -155,8 +145,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("prs_lane_id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2016-01-19 11:43:04
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:wWYzI/sp5AHQWHXc7pBRrg
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2016-01-20 14:15:15
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:tGatxEjdNkHM3fimYowIuA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

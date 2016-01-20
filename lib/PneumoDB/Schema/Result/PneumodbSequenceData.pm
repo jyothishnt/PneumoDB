@@ -40,26 +40,18 @@ __PACKAGE__->table("pneumodb_sequence_data");
 
 =head2 psd_lane_id
 
-  data_type: 'varchar'
-  default_value: (empty string)
+  data_type: 'text'
   is_nullable: 0
-  size: 30
 
 =head2 psd_sanger_id
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 30
 
 =head2 psd_public_name
 
   data_type: 'text'
   is_nullable: 0
-
-=head2 psd_accessionfind_no_duplicates
-
-  data_type: 'integer'
-  is_nullable: 1
 
 =head2 psd_ers
 
@@ -69,36 +61,6 @@ __PACKAGE__->table("pneumodb_sequence_data");
 =head2 psd_err
 
   data_type: 'text'
-  is_nullable: 1
-
-=head2 psd_mapfind_no_duplicates
-
-  data_type: 'integer'
-  is_nullable: 1
-
-=head2 psd_reference
-
-  data_type: 'text'
-  is_nullable: 1
-
-=head2 psd_mapped_perc
-
-  data_type: 'float'
-  is_nullable: 1
-
-=head2 psd_depth_of_coverage
-
-  data_type: 'text'
-  is_nullable: 1
-
-=head2 psd_depth_of_coverage_sd
-
-  data_type: 'text'
-  is_nullable: 1
-
-=head2 psd_assfind_no_duplicates
-
-  data_type: 'integer'
   is_nullable: 1
 
 =head2 psd_total_length
@@ -116,9 +78,24 @@ __PACKAGE__->table("pneumodb_sequence_data");
   data_type: 'integer'
   is_nullable: 1
 
-=head2 psd_pathfind_no_duplicates
+=head2 psd_reference
 
-  data_type: 'integer'
+  data_type: 'text'
+  is_nullable: 1
+
+=head2 psd_mapped_perc
+
+  data_type: 'text'
+  is_nullable: 1
+
+=head2 psd_depth_of_coverage
+
+  data_type: 'text'
+  is_nullable: 1
+
+=head2 psd_depth_of_coverage_sd
+
+  data_type: 'text'
   is_nullable: 1
 
 =head2 psd_npg_qc
@@ -135,37 +112,29 @@ __PACKAGE__->table("pneumodb_sequence_data");
 
 __PACKAGE__->add_columns(
   "psd_lane_id",
-  { data_type => "varchar", default_value => "", is_nullable => 0, size => 30 },
+  { data_type => "text", is_nullable => 0 },
   "psd_sanger_id",
-  { data_type => "varchar", is_nullable => 1, size => 30 },
+  { data_type => "text", is_nullable => 1 },
   "psd_public_name",
   { data_type => "text", is_nullable => 0 },
-  "psd_accessionfind_no_duplicates",
-  { data_type => "integer", is_nullable => 1 },
   "psd_ers",
   { data_type => "text", is_nullable => 1 },
   "psd_err",
   { data_type => "text", is_nullable => 1 },
-  "psd_mapfind_no_duplicates",
-  { data_type => "integer", is_nullable => 1 },
-  "psd_reference",
-  { data_type => "text", is_nullable => 1 },
-  "psd_mapped_perc",
-  { data_type => "float", is_nullable => 1 },
-  "psd_depth_of_coverage",
-  { data_type => "text", is_nullable => 1 },
-  "psd_depth_of_coverage_sd",
-  { data_type => "text", is_nullable => 1 },
-  "psd_assfind_no_duplicates",
-  { data_type => "integer", is_nullable => 1 },
   "psd_total_length",
   { data_type => "integer", is_nullable => 1 },
   "psd_no_contigs",
   { data_type => "integer", is_nullable => 1 },
   "psd_n50",
   { data_type => "integer", is_nullable => 1 },
-  "psd_pathfind_no_duplicates",
-  { data_type => "integer", is_nullable => 1 },
+  "psd_reference",
+  { data_type => "text", is_nullable => 1 },
+  "psd_mapped_perc",
+  { data_type => "text", is_nullable => 1 },
+  "psd_depth_of_coverage",
+  { data_type => "text", is_nullable => 1 },
+  "psd_depth_of_coverage_sd",
+  { data_type => "text", is_nullable => 1 },
   "psd_npg_qc",
   { data_type => "text", is_nullable => 1 },
   "psd_manual_qc",
@@ -185,8 +154,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("psd_lane_id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2016-01-19 11:43:04
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/NOezQi9PdCZ8q/YHZBYJA
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2016-01-20 14:15:15
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:11D8/aBpER+S2IT6Bl6c9w
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

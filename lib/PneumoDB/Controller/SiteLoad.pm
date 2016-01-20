@@ -60,10 +60,7 @@ sub pneumoDataDisplayMain :Path('/pneumodb/data/') :Args(0) {
   # Pushing columns from sequence data table
   $schema = $c->model('PneumoDB::PneumodbSequenceData');
   @columns = $schema->result_source->columns;
-  splice (@columns,0,4);
-  splice (@columns,2,1);
-  splice (@columns,6,1);
-  splice (@columns,9,1);
+  splice (@columns,0,3);
   push(@col_arr, @columns);
   push(@{$col}, [@columns]);
 

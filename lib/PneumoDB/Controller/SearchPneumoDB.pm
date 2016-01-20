@@ -242,7 +242,8 @@ sub createQuery {
                               LEFT JOIN pneumodb_results_antibiotic as A
                                   ON SC.pss_lane_id = A.pra_lane_id
                               LEFT JOIN pneumodb_metadata as M
-                                  ON SC.pss_public_name = M.pmd_public_name
+                                  ON (SC.pss_study_id = M.pmd_study_id)
+                                  AND (SC.pss_public_name = M.pmd_public_name)
                               LEFT JOIN pneumodb_coordinates as C
                                   ON M.pmd_country = C.pco_location
                               LEFT JOIN pneumodb_studies as ST

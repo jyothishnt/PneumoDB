@@ -40,10 +40,8 @@ __PACKAGE__->table("pneumodb_results_antibiotic");
 
 =head2 pra_lane_id
 
-  data_type: 'varchar'
-  default_value: (empty string)
+  data_type: 'text'
   is_nullable: 0
-  size: 30
 
 =head2 pra_vans_f_1_af155139
 
@@ -534,7 +532,7 @@ __PACKAGE__->table("pneumodb_results_antibiotic");
 
 __PACKAGE__->add_columns(
   "pra_lane_id",
-  { data_type => "varchar", default_value => "", is_nullable => 0, size => 30 },
+  { data_type => "text", is_nullable => 0 },
   "pra_vans_f_1_af155139",
   { data_type => "integer", is_nullable => 1 },
   "pra_aac3_iia_x13543",
@@ -744,8 +742,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("pra_lane_id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2016-01-19 11:43:04
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:02wlah4MAlksUnr4kqKStQ
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2016-01-20 14:15:15
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:y2MgI9W8kAzJLw+MM26lNw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

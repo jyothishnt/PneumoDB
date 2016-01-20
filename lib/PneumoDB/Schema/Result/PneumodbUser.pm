@@ -51,9 +51,8 @@ __PACKAGE__->table("pneumodb_users");
 
 =head2 pnu_password
 
-  data_type: 'varchar'
+  data_type: 'text'
   is_nullable: 1
-  size: 32
 
 =head2 pnu_email_address
 
@@ -93,7 +92,7 @@ __PACKAGE__->add_columns(
   "pnu_username",
   { data_type => "text", is_nullable => 1 },
   "pnu_password",
-  { data_type => "varchar", is_nullable => 1, size => 32 },
+  { data_type => "text", is_nullable => 1 },
   "pnu_email_address",
   { data_type => "text", is_nullable => 1 },
   "pnu_name",
@@ -121,8 +120,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("pnu_id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2016-01-19 11:43:04
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:+bkjUmVMXpWgObmMJCkBGA
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2016-01-20 14:15:15
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:59YgddNtn4bpc8sXuU5p7w
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

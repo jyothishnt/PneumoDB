@@ -40,10 +40,8 @@ __PACKAGE__->table("pneumodb_results_mlst");
 
 =head2 prm_lane_id
 
-  data_type: 'varchar'
-  default_value: (empty string)
+  data_type: 'text'
   is_nullable: 0
-  size: 30
 
 =head2 prm_aroe_insilico
 
@@ -84,7 +82,7 @@ __PACKAGE__->table("pneumodb_results_mlst");
 
 __PACKAGE__->add_columns(
   "prm_lane_id",
-  { data_type => "varchar", default_value => "", is_nullable => 0, size => 30 },
+  { data_type => "text", is_nullable => 0 },
   "prm_aroe_insilico",
   { data_type => "text", is_nullable => 1 },
   "prm_gdh_insilico",
@@ -114,8 +112,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("prm_lane_id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07043 @ 2016-01-19 11:43:04
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:mbJaHk9tG0fQ1nOeT6Gj7Q
+# Created by DBIx::Class::Schema::Loader v0.07043 @ 2016-01-20 14:15:15
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:SLF4/Ebr9pDvV7J5aPB5DQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
