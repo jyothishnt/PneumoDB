@@ -101,83 +101,6 @@ sub updateDecision : Path('/pneumodb/update/decision') {
         $c->res->body(to_json($res));
       }
 
-      # Update sample_outcome based on the below conditions
-=head
-        For public name X. Is there A SINGLE record (only one) with public name X that has decision 1, outcome js "Sample completed".
-        if not
-        For public name X. Is there more than one record with public name X that has decision 1, outcome is "Sample completed".
-        if not
-        Is there any record with public name X that has decision -1, outcome is "Sample in progress"
-        else
-        outcome is "Sample failed".
-=cut
-
-      # Get all sanger ids for the public name
-      if(defined $row->{pss_public_name} && $row->{pss_public_name} ne "") {
-        my $q = qq{SELECT pss_sanger_id FROM pneumodb_sequence_scape where pss_public_name = ?};
-        my $sth = $c->config->{pneumodb_dbh}->prepare($q) or die "Could not save! Error while preparing query - $!";
-        $sth->execute($row->{pss_public_name}) or die "Could not save! Error while executing query - $!";
-
-        if($sth->rows > 0) {
-          my $res_arr = $sth->fetchall_arrayref();
-          # Create the string of sanger ids for IN making query
-          my $t_arr = ();
-          foreach my $row (@$res_arr) {
-            (ref $row eq "ARRAY")? push @$t_arr, $row->[0]: push @$t_arr, $row;
-          }
-
-          my $sample_outcome;
-          # Creating a string for mysql string search with all the sanger ids for the given public name
-          my $t_sam_str = '"'.join('","',@$t_arr).'"';
-          $q = qq{SELECT prs_pneumo_qc FROM pneumodb_results where prs_sanger_id IN ($t_sam_str)};
-          $sth = $c->config->{pneumodb_dbh}->prepare($q) or die "Could not save! Error while preparing query - $!";
-          $sth->execute() or die "Could not save! Error while preparing query - $!";
-          if($sth->rows() > 0) {
-            while(my $arr = $sth->fetchrow_arrayref()) {
-              my $dec = $arr->[0];
-              # If there is atleast one sample with decision 1/2/3, then sample is completed
-              if($dec eq "Pass" || $dec eq "Pass Plus" || $dec eq "Non Pneumo") {
-                $sample_outcome = 'Sample completed';
-                last;
-              }
-              elsif($dec eq "Pending") {
-                # If there is atleast one sample with decision -1, then sample is in progress
-                $sample_outcome = 'Sample in progress';
-                last;
-              }
-              elsif($dec eq "Fail") {
-                # If decision(in db)  = 0 and current decision = 1, then sample completed. Else failed
-                ($type == 1)?$sample_outcome = 'Sample Completed' : $sample_outcome = 'Sample failed';
-              }
-            }
-          }
-          else {
-            $res = {'err' => 'Error', 'errMsg' => "$row->{pss_public_name} not found in PneumoDB Results table"};
-            $c->config->{pneumodb_dbh}->rollback;
-            $c->res->body(to_json($res));
-            return;
-          }
-          # For counting the total no. of rows updated. This include all the duplicate rows for each public name in the postData list
-          $success->{rows} += ($sth->rows())?$sth->rows():0;
-          $success->{final_sample_outcome} = $sample_outcome;
-
-          # Update sample outcome
-          $q = qq{UPDATE pneumodb_results SET prs_sample_outcome = "$sample_outcome", prs_updated_on = now() where prs_sanger_id IN ($t_sam_str)};
-          $sth = $c->config->{pneumodb_dbh}->do($q);
-        }
-        else {
-          $res = {'err' => 'Error', 'errMsg' => "Sanger id not found for $row->{pss_public_name}"};
-          $c->config->{pneumodb_dbh}->rollback;
-          $c->res->body(to_json($res));
-          return;
-        }
-      }
-      else {
-        $res = {'err' => 'Error', 'errMsg' => "Public name not found for $row->{pss_sanger_id}"};
-        $c->config->{pneumodb_dbh}->rollback;
-        $c->res->body(to_json($res));
-        return;
-      }
     }
     catch {
       $res = {'err' => 'Error occured while saving', 'errMsg' => qq{$_}};
@@ -189,6 +112,7 @@ sub updateDecision : Path('/pneumodb/update/decision') {
   # Return the number of rows updated
   if(!defined $res->{'err'}) {
     $c->config->{pneumodb_dbh}->commit;
+    $success->{rows} = $#$postData + 1;
     $res->{'success'} = $success;
   }
 

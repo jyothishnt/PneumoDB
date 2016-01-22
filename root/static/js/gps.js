@@ -606,7 +606,7 @@ var sendForDecisionUpdate = function(dataArr, pneumoQCVal) {
           showMsg(str,'danger');
         }
         else if(data.success) {
-          showMsg( data.success.rows + ((data.success.rows > 1)?' rows':' row') + ' updated as <em>' + data.success.final_sample_outcome + '</em>','success');
+          showMsg( data.success.rows + ((data.success.rows > 1)?' rows':' row') + ' updated','success');
         }
       },
       error: function(jqXHR, textStatus, errorThrown) {
@@ -810,7 +810,7 @@ var createColumnFieldsForDatagrid = function(column_name)
   t['width'] = 115;
   t['sortable'] = true;
   t['hidden'] = true;
-  var reg = /comments|sample_outcome|study_name/;
+  var reg = /comments|study_name/;
   if(reg.test(column_name)) {
     t['width'] = 200;
   }
