@@ -5,6 +5,7 @@ use JSON;
 use Archive::Zip qw( :ERROR_CODES :CONSTANTS );
 use File::Spec;
 use File::Basename 'basename';
+use Data::Dumper;
 
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -29,39 +30,43 @@ Catalyst Controller.
 sub downloadSequenceFiles :Path('/download') {
   my ( $self, $c, @args ) = @_;
   # Get post data
-  my $postData = $c->request->body_data;
+  my $postData = from_json $c->request->params->{download_query};
+
+
   # Logging
   my $log_str = '';
   $log_str .= (defined $c->user->pnu_institution)?$c->user->get('pnu_name'):"GUEST-$c->request->address";
 
-  if(scalar keys %{$postData} <= 0) {
+  if(scalar @$postData <= 0) {
     $c->res->body(to_json({'err'=>'No input found!'}));
     return;
   }
 
   if($args[0]=~/assemblies/) {
-    $log_str .= "-AssemblyDownload-".to_json($postData) if(scalar @{$postData->{lane_ids}} > 0);
+    $log_str .= "-AssemblyDownload-". $postData if(scalar @{$postData} > 0);
   }
   elsif($args[0]=~/annotations/) {
-    $log_str .= "-AnnotatoionDownload-".to_json($postData) if(scalar @{$postData->{lane_ids}} > 0);
+    $log_str .= "-AnnotatoionDownload-". $postData if(scalar @{$postData} > 0);
   }
   else {
     $c->res->body({err=>'Bad url!'});
   }
 
+
   $c->log->warn($log_str);
   # Get type of url to retrieve - submitted_ftp or fastq_ftp
-
   my $file_arr = ();
   # For each err id, get the ftp url and store in a hash of arrays
-  foreach my $lane (@{$postData->{lane_ids}}) {
+  foreach my $row (@{$postData}) {
+
     if($args[0]=~/assemblies/) {
-      push @$file_arr, File::Spec->catfile($c->config->{download_path}, '2245_assemblies', $lane.'.contigs_velvet.fa.gz');
+      push @$file_arr, File::Spec->catfile($c->config->{download_path}, $row->{study_id}, 'assemblies', $row->{lane_id}.'.contigs_velvet.fa.gz');
     }
     elsif($args[0]=~/annotations/) {
-      push @$file_arr, File::Spec->catfile($c->config->{download_path}, '2245_annotations', $lane.'.gff.gz');
+      push @$file_arr, File::Spec->catfile($c->config->{download_path}, $row->{study_id}, 'annotations', $row->{lane_id}.'.gff.gz');
     }
   }
+print Dumper $file_arr;
   # Creating a zip file
   my $zip = Archive::Zip->new();
   my $found = 0;

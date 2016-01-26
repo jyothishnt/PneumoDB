@@ -1308,10 +1308,14 @@ function downloadZipFiles(type) {
   var arr = new Array();
   if(chkdArr) {
     if(chkdArr.length > 0) {
+      var t = {};
       $.each(chkdArr, function(ind, row) {
         // Push only if lane id is present
         if(row.pss_lane_id != "" && row.pss_lane_id != undefined && row.prs_pneumo_qc != 0 )
-          arr.push(row.pss_lane_id);
+          t = {};
+          t['study_id'] = row.pss_study_id;
+          t['lane_id'] = row.pss_lane_id;
+          arr.push(t);
       });
       if(arr.length <= 0) {
         // Lane id not found
@@ -1334,7 +1338,7 @@ function downloadZipFiles(type) {
   $.ajax({
     url: url,
     data: {
-      'lane_ids' : arr,
+      'download_query' : JSON.stringify(arr),
     },
     type: 'POST',
     // processData: false,
