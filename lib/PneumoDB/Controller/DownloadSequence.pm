@@ -31,7 +31,6 @@ sub downloadSequenceFiles :Path('/download') {
   # Get post data
   my $postData = from_json $c->request->params->{download_query};
 
-
   # Logging
   my $log_str = '';
   $log_str .= (defined $c->user->pnu_institution)?$c->user->get('pnu_name'):"GUEST-$c->request->address";
@@ -42,17 +41,16 @@ sub downloadSequenceFiles :Path('/download') {
   }
 
   if($args[0]=~/assemblies/) {
-    $log_str .= "-AssemblyDownload-". $postData if(scalar @{$postData} > 0);
+    $log_str .= "-AssemblyDownload-". to_json($postData) if(scalar @{$postData} > 0);
   }
   elsif($args[0]=~/annotations/) {
-    $log_str .= "-AnnotatoionDownload-". $postData if(scalar @{$postData} > 0);
+    $log_str .= "-AnnotatoionDownload-". to_json($postData) if(scalar @{$postData} > 0);
   }
   else {
     $c->res->body({err=>'Bad url!'});
   }
 
   $c->log->warn($log_str);
-  my $file_arr = ();
 
   # Creating a zip file
   my $zip = Archive::Zip->new();
@@ -82,6 +80,7 @@ sub downloadSequenceFiles :Path('/download') {
       $found = 1;
     }
   }
+
   if($found == 0) {
     $c->res->body(to_json({err=>'Files not available for download!'}));
   }
