@@ -8,6 +8,7 @@ use Spreadsheet::ParseExcel;
 use Text::CSV;
 use PneumoDB::Controller::SearchPneumoDB;
 use Try::Tiny;
+use File::ReadBackwards;
 
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -345,6 +346,83 @@ sub parseCSV {
   $csv->eol ("\r\n");
 
   return $parsedData;
+}
+
+# Fetch live usage data
+sub getLiveUsageData :Path('/json/get_live_data/') {
+  my ( $self, $c, @args ) = @_;
+  my $map = [];
+
+  # Read access log
+  if (-s $c->config->{logFile}) {
+    my $bw = File::ReadBackwards->new( $c->config->{logFile} ) or
+                        $c->res->body("Can't read log file $c->config->{logFile} $!");
+
+    my $log_line;
+    my $userLimit = $args[0] || 2;
+    my @userArr = ();
+    my @lineArr = ();
+    my @timeArr = ();
+    my $user = '';
+    my $liveData = {};
+    my $i=0;
+    my $t = {};
+    my $userFoundMap = {};
+    my $ip;
+    my $loc;
+    my $url = "";
+    my $m;
+
+    while( defined( $log_line = $bw->readline ) ) {
+      @lineArr = split(/\*\*\*/, $log_line);
+      next unless (defined $lineArr[1]);
+      chomp $lineArr[1];
+      @userArr = split(',', $lineArr[1]);
+      $user = $userArr[0] || '';
+      $ip = $userArr[1] || '';
+
+      if ($user ne '') {
+        @timeArr = split(/\]\s/, $lineArr[0]);
+        $timeArr[0] =~s/^\[//;
+
+        if(! $userFoundMap->{$user}) {
+          $t = {};
+          $userFoundMap->{$user}++;
+          $t->{user} = $user || '';
+          $t->{ip} = $ip || '';
+          $t->{time} = $timeArr[0] || '';
+
+          # Get lat lng from IP
+          if ($ip ne '') {
+            $m = WWW::Mechanize->new();
+            $url = "http://ipinfo.io/$ip/loc";
+            $m->get($url);
+            $loc = $m->content;
+            chomp $loc;
+            if ($loc ne "undefined") {
+              ($t->{longitude}, $t->{latitude}) = split(',', $loc);
+            }
+          }
+
+          if(defined $userArr[2]) {
+            chomp $userArr[2];
+            $t->{type} = $userArr[2];
+          }
+          push @{$liveData->{data}}, $t;
+        }
+
+        if (scalar @{$liveData->{data}} >= $userLimit) {
+          $c->res->body(to_json($liveData));
+        }
+      }
+    }
+    if (scalar @{$liveData->{data}} > 0) {
+      $c->res->body(to_json($liveData));
+    }
+    else {
+      $c->res->body(to_json({'err', 'No data found or something went wrong. Please try again'}));
+    }
+  }
 }
 
 =encoding utf8
